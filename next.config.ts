@@ -11,6 +11,22 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "placehold.co",
       },
+      {
+        protocol: "https",
+        hostname: "myanimelist.net",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.myanimelist.net",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn-nozomi.akamai.crunchyroll.com",
+      },
+      {
+        protocol: "https",
+        hostname: "s4.anilist.co",
+      },
     ],
   },
 };
