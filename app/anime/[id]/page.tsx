@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import { getAnime } from "@/app/lib/anilist";
+import { IconPlayerPlay, IconStar, IconClock, IconCalendar } from "@tabler/icons-react";
 
 export default async function AnimeDetailPage({
   params,
@@ -19,8 +20,7 @@ export default async function AnimeDetailPage({
   let anime;
   try {
     anime = await getAnime(animeId);
-  } catch (error) {
-    console.error("Error fetching anime:", error);
+  } catch {
     notFound();
   }
 
@@ -41,9 +41,9 @@ export default async function AnimeDetailPage({
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-8">
+      <main className="mx-auto max-w-7xl px-6 sm:px-8 py-12">
         {anime.bannerImage && (
-          <div className="relative w-full aspect-video max-h-[480px] overflow-hidden rounded-xl border border-border mb-8">
+          <div className="relative w-full aspect-video max-h-[480px] overflow-hidden rounded-2xl border border-glass-border mb-10">
             <Image
               src={anime.bannerImage}
               alt={title}
@@ -52,18 +52,18 @@ export default async function AnimeDetailPage({
               sizes="100vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-background/60" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
           </div>
         )}
 
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col md:flex-row gap-10">
           <div className="shrink-0">
-            <div className="relative w-48 md:w-64 aspect-[2/3] rounded-lg overflow-hidden border border-border mx-auto md:mx-0">
+            <div className="relative w-52 md:w-64 aspect-[2/3] rounded-xl overflow-hidden border border-glass-border mx-auto md:mx-0">
               <Image
-                src={anime.coverImage.large || "https://placehold.co/384x576/18181b/a1a1aa?text=No+Image"}
+                src={anime.coverImage.large || "https://placehold.co/384x576/0a0a0a/71717a?text=No+Image"}
                 alt={title}
                 fill
-                sizes="(max-width: 768px) 192px, 256px"
+                sizes="(max-width: 768px) 208px, 256px"
                 className="object-cover"
               />
             </div>
@@ -74,46 +74,50 @@ export default async function AnimeDetailPage({
               {title}
             </h1>
             {anime.title.native && (
-              <p className="text-muted-foreground mt-1">{anime.title.native}</p>
+              <p className="text-muted-foreground mt-2">{anime.title.native}</p>
             )}
 
-            <div className="flex flex-wrap items-center gap-3 mt-4 text-sm">
-              <span className="flex items-center gap-1">
-                <svg className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
+            <div className="flex flex-wrap items-center gap-4 mt-5 text-sm">
+              <span className="flex items-center gap-1.5">
+                <IconStar className="w-4 h-4 text-amber-400" fill="currentColor" stroke={1.5} />
                 <span className="font-semibold">{score}</span>
                 <span className="text-muted-foreground">({anime.popularity?.toLocaleString()} users)</span>
               </span>
-              <span className="text-muted-foreground">|</span>
-              <span>{format}</span>
+              <span className="text-muted-foreground/50">|</span>
+              <span className="text-zinc-400">{format}</span>
               {anime.episodes && (
                 <>
-                  <span className="text-muted-foreground">|</span>
-                  <span>{anime.episodes} episodes</span>
+                  <span className="text-muted-foreground/50">|</span>
+                  <span className="flex items-center gap-1.5 text-zinc-400">
+                    <IconCalendar className="w-4 h-4" stroke={1.5} />
+                    {anime.episodes} episodes
+                  </span>
                 </>
               )}
               {duration && (
                 <>
-                  <span className="text-muted-foreground">|</span>
-                  <span>{duration}</span>
+                  <span className="text-muted-foreground/50">|</span>
+                  <span className="flex items-center gap-1.5 text-zinc-400">
+                    <IconClock className="w-4 h-4" stroke={1.5} />
+                    {duration}
+                  </span>
                 </>
               )}
               {season && (
                 <>
-                  <span className="text-muted-foreground">|</span>
-                  <span>{season}</span>
+                  <span className="text-muted-foreground/50">|</span>
+                  <span className="text-zinc-400">{season}</span>
                 </>
               )}
-              <span className="text-muted-foreground">|</span>
-              <span>{status}</span>
+              <span className="text-muted-foreground/50">|</span>
+              <span className="text-zinc-400">{status}</span>
             </div>
 
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-wrap gap-2.5 mt-5">
               {anime.genres.map((g) => (
                 <span
                   key={g}
-                  className="px-3 py-1 rounded-full text-xs font-medium bg-muted border border-border"
+                  className="px-3.5 py-1.5 rounded-full text-xs font-medium glass"
                 >
                   {g}
                 </span>
@@ -121,27 +125,25 @@ export default async function AnimeDetailPage({
             </div>
 
             {studios.length > 0 && (
-              <p className="text-sm text-muted-foreground mt-3">
+              <p className="text-sm text-muted-foreground mt-4">
                 Studio: {studios.map((s) => s.name).join(", ")}
               </p>
             )}
 
-            <div className="mt-6 flex gap-3">
+            <div className="mt-8 flex gap-4">
               <Link
                 href={`/anime/${anime.id}/watch`}
-                className="inline-flex items-center gap-2 h-10 px-5 rounded-md bg-accent text-accent-foreground font-medium text-sm hover:bg-emerald-400 transition-colors"
+                className="inline-flex items-center gap-2.5 h-12 px-7 rounded-xl bg-accent text-white font-medium text-sm hover:bg-accent-hover transition-colors"
               >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                </svg>
+                <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
                 Watch Now
               </Link>
             </div>
 
-            <div className="mt-6">
-              <h2 className="text-lg font-semibold mb-2">Synopsis</h2>
+            <div className="mt-8">
+              <h2 className="text-lg font-semibold mb-3">Synopsis</h2>
               <div
-                className="text-zinc-300 leading-relaxed"
+                className="text-zinc-400 leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: anime.description || "No synopsis available." }}
               />
             </div>
@@ -149,17 +151,17 @@ export default async function AnimeDetailPage({
         </div>
 
         {topCharacters.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-bold mb-4">Characters</h2>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+          <section className="mt-14">
+            <h2 className="text-xl font-bold mb-6">Characters</h2>
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
               {topCharacters.map(({ node, role }) => (
                 <div key={node.id} className="text-center">
-                  <div className="relative w-full aspect-square rounded-full overflow-hidden border border-border bg-muted mx-auto">
+                  <div className="relative w-full aspect-square rounded-full overflow-hidden border border-glass-border bg-muted mx-auto">
                     <Image
                       src={
                         node.image?.large ||
                         node.image?.medium ||
-                        "https://placehold.co/185x185/18181b/a1a1aa?text=?"
+                        "https://placehold.co/185x185/0a0a0a/71717a?text=?"
                       }
                       alt={node.name.full}
                       fill
@@ -167,8 +169,8 @@ export default async function AnimeDetailPage({
                       className="object-cover"
                     />
                   </div>
-                  <p className="mt-2 text-xs font-medium truncate">{node.name.full}</p>
-                  <p className="text-[10px] text-muted-foreground truncate">
+                  <p className="mt-3 text-xs font-medium truncate">{node.name.full}</p>
+                  <p className="text-[10px] text-muted-foreground truncate mt-0.5">
                     {role}
                   </p>
                 </div>
@@ -178,25 +180,25 @@ export default async function AnimeDetailPage({
         )}
 
         {recommendations.length > 0 && (
-          <section className="mt-12">
-            <h2 className="text-xl font-bold mb-4">Recommendations</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <section className="mt-14">
+            <h2 className="text-xl font-bold mb-6">Recommendations</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
               {recommendations.map(({ node }) => (
                 <Link
                   key={node.mediaRecommendation.id}
                   href={`/anime/${node.mediaRecommendation.id}`}
                   className="group block"
                 >
-                  <div className="relative aspect-[2/3] rounded-lg overflow-hidden border border-border">
+                  <div className="relative aspect-[2/3] rounded-xl overflow-hidden glass-subtle transition-colors duration-200 group-hover:border-white/[0.05]">
                     <Image
-                      src={node.mediaRecommendation.coverImage.large || "https://placehold.co/384x576/18181b/a1a1aa?text=No+Image"}
+                      src={node.mediaRecommendation.coverImage.large || "https://placehold.co/384x576/0a0a0a/71717a?text=No+Image"}
                       alt={node.mediaRecommendation.title.english || node.mediaRecommendation.title.romaji}
                       fill
                       sizes="185px"
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  <p className="mt-2 text-xs font-medium truncate">
+                  <p className="mt-3 text-xs font-medium truncate px-0.5">
                     {node.mediaRecommendation.title.english || node.mediaRecommendation.title.romaji}
                   </p>
                 </Link>
