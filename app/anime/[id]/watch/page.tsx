@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import AnimePlayer from "@/app/components/AnimePlayer";
 import { getAnime } from "@/app/lib/anilist";
+import { IconAlertTriangle, IconArrowLeft } from "@tabler/icons-react";
 
 export default async function WatchPage({
   params,
@@ -24,28 +25,24 @@ export default async function WatchPage({
   if (!anime || !anime.episodes) {
     return (
       <div className="fixed inset-0 bg-black flex flex-col z-50">
-        <div className="flex items-center justify-between h-12 px-4 bg-zinc-950 border-b border-zinc-800 shrink-0">
+        <div className="flex items-center justify-between h-14 px-6 bg-black/80 backdrop-blur-xl border-b border-glass-border shrink-0">
           <a
             href={`/anime/${animeId}`}
-            className="flex items-center gap-2 text-sm text-zinc-300 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <IconArrowLeft className="w-4 h-4" stroke={2} />
             Back
           </a>
-          <span className="text-xs text-zinc-400">{anime?.title.english || anime?.title.romaji}</span>
+          <span className="text-xs text-zinc-500">{anime?.title.english || anime?.title.romaji}</span>
           <div className="w-16" />
         </div>
-        <div className="flex-1 flex items-center justify-center bg-zinc-950">
-          <div className="text-center space-y-4">
-            <div className="w-16 h-16 mx-auto rounded-full bg-zinc-900 flex items-center justify-center">
-              <svg className="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+        <div className="flex-1 flex items-center justify-center bg-black">
+          <div className="text-center space-y-5">
+            <div className="w-16 h-16 mx-auto rounded-2xl glass-accent flex items-center justify-center">
+              <IconAlertTriangle className="w-8 h-8 text-accent" stroke={1.5} />
             </div>
             <h2 className="text-xl font-semibold text-white">No Episodes Found</h2>
-            <p className="text-sm text-zinc-400 max-w-md">
+            <p className="text-sm text-zinc-500 max-w-md leading-relaxed">
               This anime is not available for streaming right now.
             </p>
           </div>

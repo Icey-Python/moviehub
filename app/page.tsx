@@ -1,7 +1,7 @@
 import Navbar from "@/app/components/Navbar";
 import Hero from "@/app/components/Hero";
 import MovieGrid from "@/app/components/MovieGrid";
-import { getTrending, getPopular, getTopRated, searchMovies, getTrendingTV, getPopularTV, getTopRatedTV, searchTVShows } from "@/app/lib/tmdb";
+import { getTrending, getPopular, getTopRated, getTrendingTV, getPopularTV, getTopRatedTV, searchMovies, searchTVShows } from "@/app/lib/tmdb";
 import { getTrendingAnime, getPopularAnime, getTopRatedAnime, searchAnime } from "@/app/lib/anilist";
 
 export default async function HomePage({
@@ -22,7 +22,7 @@ export default async function HomePage({
     return (
       <>
         <Navbar />
-        <main className="mx-auto max-w-7xl px-4 sm:px-6 py-6 space-y-10">
+        <main className="mx-auto max-w-7xl px-6 sm:px-8 py-10 space-y-14">
           <MovieGrid movies={movies} title={`Movies for "${query}"`} />
           {tvShows.length > 0 && (
             <MovieGrid movies={tvShows} title={`TV Shows for "${query}"`} isTV />
@@ -52,7 +52,7 @@ export default async function HomePage({
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 py-6 space-y-10">
+      <main className="mx-auto max-w-7xl px-6 sm:px-8 py-10 space-y-14">
         {hero && <Hero movie={hero} />}
         <MovieGrid movies={trending} title="Trending Movies" />
         <MovieGrid movies={popular} title="Popular Movies" />
