@@ -61,3 +61,27 @@ export interface CastMember {
 export interface Credits {
   cast: CastMember[];
 }
+
+export interface TVShow {
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  first_air_date: string;
+  vote_average: number;
+  vote_count: number;
+  genre_ids: number[];
+  popularity: number;
+  adult: boolean;
+  original_language: string;
+}
+
+export interface TVShowDetail extends TVShow {
+  runtime: number | null;
+  status: string;
+  tagline: string;
+  number_of_seasons: number;
+  number_of_episodes: number;
+  genres: Genre[];
+}

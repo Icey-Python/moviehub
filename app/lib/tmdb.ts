@@ -1,4 +1,4 @@
-import type { Movie, MovieDetail, TMDBResponse, Credits } from "./types";
+import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail } from "./types";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE = "https://image.tmdb.org/t/p";
@@ -53,5 +53,35 @@ export async function getPopular(): Promise<Movie[]> {
 
 export async function getTopRated(): Promise<Movie[]> {
   const data = await tmdbFetch<TMDBResponse<Movie>>("/movie/top_rated");
+  return data.results;
+}
+
+export async function getTrendingTV(): Promise<TVShow[]> {
+  const data = await tmdbFetch<TMDBResponse<TVShow>>("/trending/tv/week");
+  return data.results;
+}
+
+export async function searchTVShows(query: string): Promise<TVShow[]> {
+  const data = await tmdbFetch<TMDBResponse<TVShow>>(
+    `/search/tv?query=${encodeURIComponent(query)}`
+  );
+  return data.results;
+}
+
+export async function getTVShow(id: number): Promise<TVShowDetail> {
+  return tmdbFetch<TVShowDetail>(`/tv/${id}`);
+}
+
+export async function getTVShowCredits(id: number): Promise<Credits> {
+  return tmdbFetch<Credits>(`/tv/${id}/credits`);
+}
+
+export async function getPopularTV(): Promise<TVShow[]> {
+  const data = await tmdbFetch<TMDBResponse<TVShow>>("/tv/popular");
+  return data.results;
+}
+
+export async function getTopRatedTV(): Promise<TVShow[]> {
+  const data = await tmdbFetch<TMDBResponse<TVShow>>("/tv/top_rated");
   return data.results;
 }

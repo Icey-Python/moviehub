@@ -1,12 +1,16 @@
-import type { Movie } from "@/app/lib/types";
+import type { Movie, TVShow } from "@/app/lib/types";
 import MovieCard from "./MovieCard";
+
+type MediaItem = Movie | TVShow;
 
 export default function MovieGrid({
   movies,
   title,
+  isTV = false,
 }: {
-  movies: Movie[];
+  movies: MediaItem[];
   title?: string;
+  isTV?: boolean;
 }) {
   return (
     <section>
@@ -15,11 +19,11 @@ export default function MovieGrid({
       )}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
+          <MovieCard key={movie.id} movie={movie} isTV={isTV} />
         ))}
       </div>
       {movies.length === 0 && (
-        <p className="text-muted-foreground text-center py-16">No movies found.</p>
+        <p className="text-muted-foreground text-center py-16">No results found.</p>
       )}
     </section>
   );

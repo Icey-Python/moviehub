@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Player from "@/app/components/Player";
-import { getMovie } from "@/app/lib/tmdb";
+import { getTVShow } from "@/app/lib/tmdb";
 
 export default async function WatchPage({
   params,
@@ -8,16 +8,16 @@ export default async function WatchPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const movieId = Number(id);
-  if (isNaN(movieId)) notFound();
+  const tvId = Number(id);
+  if (isNaN(tvId)) notFound();
 
-  let title = "Movie";
+  let title = "TV Show";
   try {
-    const movie = await getMovie(movieId);
-    title = movie.title;
+    const tv = await getTVShow(tvId);
+    title = tv.name;
   } catch {
     // keep default title
   }
 
-  return <Player movieId={movieId} movieTitle={title} type="movie" />;
+  return <Player movieId={tvId} movieTitle={title} type="tv" />;
 }

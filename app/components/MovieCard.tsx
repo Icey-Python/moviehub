@@ -1,21 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Movie } from "@/app/lib/types";
+import type { Movie, TVShow } from "@/app/lib/types";
 import { posterUrl } from "@/app/lib/tmdb";
 
-export default function MovieCard({ movie }: { movie: Movie }) {
-  const year = movie.release_date?.slice(0, 4) ?? "—";
+type MediaItem = Movie | TVShow;
+
+export default function MovieCard({ movie, isTV = false }: { movie: MediaItem; isTV?: boolean }) {
+  const title = "name" in movie ? movie.name : movie.title;
+  const date = "release_date" in movie ? movie.release_date : "first_air_date" in movie ? movie.first_air_date : undefined;
+  const year = date?.slice(0, 4) ?? "—";
   const rating = movie.vote_average.toFixed(1);
+  const href = isTV ? `/series/${movie.id}` : `/movie/${movie.id}`;
 
   return (
     <Link
-      href={`/movie/${movie.id}`}
+      href={href}
       className="group block rounded-lg overflow-hidden bg-card border border-border transition-colors hover:border-zinc-700"
     >
       <div className="relative aspect-[2/3] overflow-hidden">
         <Image
           src={posterUrl(movie.poster_path)}
-          alt={movie.title}
+          alt={title}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
           className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -29,7 +34,7 @@ export default function MovieCard({ movie }: { movie: Movie }) {
       </div>
       <div className="p-3">
         <h3 className="font-semibold text-sm truncate text-card-foreground">
-          {movie.title}
+          {title}
         </h3>
         <p className="text-xs text-muted-foreground mt-1">{year}</p>
       </div>
