@@ -1,16 +1,40 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Movie, TVShow } from "@/app/lib/types";
+import type { Movie, TVShow, AnilistAnime } from "@/app/lib/types";
 import { posterUrl } from "@/app/lib/tmdb";
 
-type MediaItem = Movie | TVShow;
+type MediaItem = Movie | TVShow | AnilistAnime;
 
-export default function MovieCard({ movie, isTV = false }: { movie: MediaItem; isTV?: boolean }) {
-  const title = "name" in movie ? movie.name : movie.title;
-  const date = "release_date" in movie ? movie.release_date : "first_air_date" in movie ? movie.first_air_date : undefined;
+function isAnilistItem(item: MediaItem): item is AnilistAnime {
+  return "coverImage" in item;
+}
+
+export default function MovieCard({ movie, isTV = false, isAnime = false }: { movie: MediaItem; isTV?: boolean; isAnime?: boolean }) {
+  const isAL = isAnilistItem(movie);
+  const title = isAL
+    ? movie.title.english || movie.title.romaji
+    : "name" in movie
+    ? movie.name
+    : movie.title;
+  const date = isAL
+    ? movie.seasonYear?.toString()
+    : "release_date" in movie
+    ? movie.release_date
+    : "first_air_date" in movie
+    ? movie.first_air_date
+    : undefined;
   const year = date?.slice(0, 4) ?? "—";
-  const rating = movie.vote_average.toFixed(1);
-  const href = isTV ? `/series/${movie.id}` : `/movie/${movie.id}`;
+  const rating = isAL
+    ? (movie.averageScore ? (movie.averageScore / 10).toFixed(1) : "N/A")
+    : movie.vote_average.toFixed(1);
+  const href = isAnime
+    ? `/anime/${movie.id}`
+    : isTV
+    ? `/series/${(movie as TVShow).id}`
+    : `/movie/${(movie as Movie).id}`;
+  const imageSrc = isAL
+    ? (movie.coverImage.large || "https://placehold.co/500x750/18181b/a1a1aa?text=No+Image")
+    : posterUrl(movie.poster_path);
 
   return (
     <Link
@@ -19,7 +43,7 @@ export default function MovieCard({ movie, isTV = false }: { movie: MediaItem; i
     >
       <div className="relative aspect-[2/3] overflow-hidden">
         <Image
-          src={posterUrl(movie.poster_path)}
+          src={imageSrc}
           alt={title}
           fill
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"

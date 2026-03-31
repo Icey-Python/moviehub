@@ -2,15 +2,17 @@
 
 import Link from "next/link";
 
-export default function Player({ movieId, movieTitle, type }: { movieId: number; movieTitle: string; type: "movie" | "tv" }) {
-  const embedUrl = `https://vidsrc.me/embed/${type}/${movieId}`;
+export default function Player({ movieId, movieTitle, type }: { movieId: number; movieTitle: string; type: "movie" | "tv" | "anime" }) {
+  const embedUrl = type === "anime"
+    ? `https://vidsrc.me/embed/anime/${movieId}`
+    : `https://vidsrc.me/embed/${type}/${movieId}`;
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col z-50">
       {/* Top bar */}
       <div className="flex items-center justify-between h-12 px-4 bg-zinc-950 border-b border-zinc-800 shrink-0">
         <Link
-          href={`/movie/${movieId}`}
+          href={type === "anime" ? `/anime/${movieId}` : type === "tv" ? `/series/${movieId}` : `/movie/${movieId}`}
           className="flex items-center gap-2 text-sm text-zinc-300 hover:text-white transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

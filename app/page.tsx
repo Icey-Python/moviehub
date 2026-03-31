@@ -2,6 +2,7 @@ import Navbar from "@/app/components/Navbar";
 import Hero from "@/app/components/Hero";
 import MovieGrid from "@/app/components/MovieGrid";
 import { getTrending, getPopular, getTopRated, searchMovies, getTrendingTV, getPopularTV, getTopRatedTV, searchTVShows } from "@/app/lib/tmdb";
+import { getTrendingAnime, getPopularAnime, getTopRatedAnime, searchAnime } from "@/app/lib/anilist";
 
 export default async function HomePage({
   searchParams,
@@ -12,9 +13,10 @@ export default async function HomePage({
   const query = typeof params.q === "string" ? params.q : undefined;
 
   if (query) {
-    const [movies, tvShows] = await Promise.all([
+    const [movies, tvShows, anime] = await Promise.all([
       searchMovies(query),
       searchTVShows(query),
+      searchAnime(query),
     ]);
 
     return (
@@ -25,18 +27,24 @@ export default async function HomePage({
           {tvShows.length > 0 && (
             <MovieGrid movies={tvShows} title={`TV Shows for "${query}"`} isTV />
           )}
+          {anime.media.length > 0 && (
+            <MovieGrid movies={anime.media} title={`Anime for "${query}"`} isAnime />
+          )}
         </main>
       </>
     );
   }
 
-  const [trending, popular, topRated, trendingTV, popularTV, topRatedTV] = await Promise.all([
+  const [trending, popular, topRated, trendingTV, popularTV, topRatedTV, trendingAnime, popularAnime, topRatedAnime] = await Promise.all([
     getTrending(),
     getPopular(),
     getTopRated(),
     getTrendingTV(),
     getPopularTV(),
     getTopRatedTV(),
+    getTrendingAnime(undefined, 10),
+    getPopularAnime(undefined, 10),
+    getTopRatedAnime(undefined, 10),
   ]);
 
   const hero = trending[0];
@@ -52,6 +60,9 @@ export default async function HomePage({
         <MovieGrid movies={trendingTV} title="Trending TV Shows" isTV />
         <MovieGrid movies={popularTV} title="Popular TV Shows" isTV />
         <MovieGrid movies={topRatedTV} title="Top Rated TV Shows" isTV />
+        <MovieGrid movies={trendingAnime.media} title="Trending Anime" isAnime />
+        <MovieGrid movies={popularAnime.media} title="Popular Anime" isAnime />
+        <MovieGrid movies={topRatedAnime.media} title="Top Rated Anime" isAnime />
       </main>
     </>
   );

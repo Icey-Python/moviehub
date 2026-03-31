@@ -85,3 +85,214 @@ export interface TVShowDetail extends TVShow {
   number_of_episodes: number;
   genres: Genre[];
 }
+
+export interface JikanAnime {
+  mal_id: number;
+  title: string;
+  title_english: string | null;
+  title_japanese: string | null;
+  synopsis: string | null;
+  score: number | null;
+  scored_by: number;
+  episodes: number | null;
+  status: string;
+  type: string;
+  rating: string | null;
+  season: string | null;
+  year: number | null;
+  images: {
+    jpg: {
+      image_url: string;
+      small_image_url: string;
+      large_image_url: string;
+    };
+    webp: {
+      image_url: string;
+      small_image_url: string;
+      large_image_url: string;
+    };
+  };
+  genres: {
+    mal_id: number;
+    name: string;
+    type: string;
+  }[];
+  studios: {
+    mal_id: number;
+    name: string;
+    type: string;
+  }[];
+  aired: {
+    from: string | null;
+    to: string | null;
+    string: string;
+  };
+  popularity: number;
+  members: number;
+  favorites: number;
+  rank: number | null;
+}
+
+export interface JikanAnimeDetail extends JikanAnime {
+  trailer: {
+    youtube_id: string | null;
+    url: string | null;
+    embed_url: string | null;
+  };
+  background: string | null;
+  source: string;
+  duration: string;
+  producers: {
+    mal_id: number;
+    name: string;
+    type: string;
+  }[];
+  licensors: {
+    mal_id: number;
+    name: string;
+    type: string;
+  }[];
+  themes: {
+    mal_id: number;
+    name: string;
+    type: string;
+  }[];
+  demographics: {
+    mal_id: number;
+    name: string;
+    type: string;
+  }[];
+  title_synonyms: string[];
+}
+
+export interface JikanCharacter {
+  character: {
+    mal_id: number;
+    name: string;
+    images: {
+      jpg: {
+        image_url: string;
+      };
+    };
+  };
+  role: string;
+  voice_actors: {
+    person: {
+      mal_id: number;
+      name: string;
+    };
+    language: string;
+  }[];
+}
+
+export interface JikanResponse<T> {
+  data: T;
+  pagination?: {
+    last_visible_page: number;
+    has_next_page: boolean;
+    current_page: number;
+    items: {
+      count: number;
+      total: number;
+      per_page: number;
+    };
+  };
+}
+
+export interface AnilistTitle {
+  romaji: string;
+  english: string | null;
+  native: string | null;
+}
+
+export interface AnilistImage {
+  large: string | null;
+  extraLarge: string | null;
+  medium: string | null;
+}
+
+export interface AnilistExternalLink {
+  id: number;
+  site: string;
+  url: string;
+  type: "STREAMING" | "SOCIAL" | "INFO";
+  color: string | null;
+  icon: string | null;
+  notes: string | null;
+  language: string | null;
+}
+
+export interface AnilistCharacter {
+  id: number;
+  name: {
+    full: string;
+    native: string | null;
+  };
+  image: {
+    large: string | null;
+    medium: string | null;
+  };
+  role: "MAIN" | "SUPPORTING" | "BACKGROUND";
+}
+
+export interface AnilistAnime {
+  id: number;
+  title: AnilistTitle;
+  coverImage: AnilistImage;
+  bannerImage: string | null;
+  format: string | null;
+  episodes: number | null;
+  status: string | null;
+  season: string | null;
+  seasonYear: number | null;
+  averageScore: number | null;
+  popularity: number | null;
+  genres: string[];
+  description: string | null;
+  duration: number | null;
+  source: string | null;
+  studios: {
+    nodes: {
+      id: number;
+      name: string;
+      isAnimationStudio: boolean;
+    }[];
+  };
+  externalLinks: AnilistExternalLink[];
+  characters: {
+    edges: {
+      node: AnilistCharacter;
+      role: string;
+    }[];
+  };
+  relations: {
+    edges: {
+      relationType: string;
+      node: {
+        id: number;
+        title: AnilistTitle;
+        coverImage: AnilistImage;
+        format: string | null;
+        episodes: number | null;
+      };
+    }[];
+  };
+  recommendations: {
+    edges: {
+      node: {
+        mediaRecommendation: {
+          id: number;
+          title: AnilistTitle;
+          coverImage: AnilistImage;
+          format: string | null;
+          episodes: number | null;
+          averageScore: number | null;
+        };
+      };
+    }[];
+  };
+  nextAiringEpisode: {
+    airingAt: number;
+    episode: number;
+  } | null;
+}

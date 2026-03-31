@@ -85,3 +85,19 @@ export async function getTopRatedTV(): Promise<TVShow[]> {
   const data = await tmdbFetch<TMDBResponse<TVShow>>("/tv/top_rated");
   return data.results;
 }
+
+const ANIME_GENRE_ID = 16;
+
+export async function getAnimeMovies(): Promise<Movie[]> {
+  const data = await tmdbFetch<TMDBResponse<Movie>>(
+    `/discover/movie?with_genres=${ANIME_GENRE_ID}&sort_by=popularity.desc`
+  );
+  return data.results;
+}
+
+export async function getAnimeTV(): Promise<TVShow[]> {
+  const data = await tmdbFetch<TMDBResponse<TVShow>>(
+    `/discover/tv?with_genres=${ANIME_GENRE_ID}&sort_by=popularity.desc`
+  );
+  return data.results;
+}
