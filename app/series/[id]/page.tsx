@@ -2,15 +2,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
-import { getTVShow, getTVShowCredits, posterUrl, backdropUrl } from "@/app/lib/tmdb";
+import SeasonTabs from "@/app/components/SeasonTabs";
+import { getTVShow, getTVShowCredits, getTVSeason, posterUrl, backdropUrl } from "@/app/lib/tmdb";
 import { IconPlayerPlay, IconStar, IconCalendar, IconDeviceTv } from "@tabler/icons-react";
 
 export default async function TVDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ season?: string }>;
 }) {
   const { id } = await params;
+  const { season } = await searchParams;
   const tvId = Number(id);
   
   if (isNaN(tvId)) {
@@ -29,6 +33,16 @@ export default async function TVDetailPage({
 
   if (!tv) {
     notFound();
+  }
+
+  const validSeasons = tv.seasons.filter((s) => s.season_number > 0);
+  const activeSeason = season ? Number(season) : (validSeasons[0]?.season_number ?? 1);
+
+  let seasonData;
+  try {
+    seasonData = await getTVSeason(tvId, activeSeason);
+  } catch {
+    seasonData = null;
   }
 
   const topCast = credits.cast.slice(0, 12);
@@ -120,12 +134,27 @@ export default async function TVDetailPage({
           </div>
         </div>
 
+        {validSeasons.length > 0 && seasonData && (
+          <SeasonTabs
+            seasons={validSeasons}
+            activeSeason={activeSeason}
+            episodes={seasonData.episodes}
+            tvId={tvId}
+          />
+        )}
+
         {topCast.length > 0 && (
           <section className="mt-14">
             <h2 className="text-xl font-bold mb-6">Top Cast</h2>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
               {topCast.map((member) => (
-                <div key={member.id} className="text-center">
+                <a
+                  key={member.id}
+                  href={`https://www.themoviedb.org/person/${member.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-center group"
+                >
                   <div className="relative w-full aspect-square rounded-full overflow-hidden border border-glass-border bg-muted mx-auto">
                     <Image
                       src={
@@ -136,14 +165,14 @@ export default async function TVDetailPage({
                       alt={member.name}
                       fill
                       sizes="185px"
-                      className="object-cover"
+                      className="object-cover group-hover:scale-105 transition-transform"
                     />
                   </div>
-                  <p className="mt-3 text-xs font-medium truncate">{member.name}</p>
+                  <p className="mt-3 text-xs font-medium truncate group-hover:text-accent transition-colors">{member.name}</p>
                   <p className="text-[10px] text-muted-foreground truncate mt-0.5">
                     {member.character}
                   </p>
-                </div>
+                </a>
               ))}
             </div>
           </section>

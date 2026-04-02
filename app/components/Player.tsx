@@ -3,10 +3,15 @@
 import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
 
-export default function Player({ movieId, movieTitle, type }: { movieId: number; movieTitle: string; type: "movie" | "tv" | "anime" }) {
-  const embedUrl = type === "anime"
-    ? `https://vidsrc.me/embed/anime/${movieId}`
-    : `https://vidsrc.me/embed/${type}/${movieId}`;
+export default function Player({ movieId, movieTitle, type, season, episode }: { movieId: number; movieTitle: string; type: "movie" | "tv" | "anime"; season?: number; episode?: number }) {
+  let embedUrl: string;
+  if (type === "anime") {
+    embedUrl = `https://vidsrc.me/embed/anime/${movieId}`;
+  } else if (type === "tv" && season && episode) {
+    embedUrl = `https://vidsrc.me/embed/tv/${movieId}/${season}/${episode}`;
+  } else {
+    embedUrl = `https://vidsrc.me/embed/${type}/${movieId}`;
+  }
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col z-50">

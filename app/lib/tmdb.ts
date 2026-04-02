@@ -1,4 +1,4 @@
-import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail } from "./types";
+import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail, SeasonDetail } from "./types";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE = "https://image.tmdb.org/t/p";
@@ -24,6 +24,11 @@ export function posterUrl(path: string | null, size = "w500"): string {
 export function backdropUrl(path: string | null): string {
   if (!path) return "https://placehold.co/1280x720/18181b/a1a1aa?text=No+Image";
   return `${IMAGE_BASE}/w1280${path}`;
+}
+
+export function stillUrl(path: string | null): string {
+  if (!path) return "https://placehold.co/300x169/18181b/a1a1aa?text=No+Image";
+  return `${IMAGE_BASE}/w300${path}`;
 }
 
 export async function getTrending(): Promise<Movie[]> {
@@ -84,6 +89,10 @@ export async function getPopularTV(): Promise<TVShow[]> {
 export async function getTopRatedTV(): Promise<TVShow[]> {
   const data = await tmdbFetch<TMDBResponse<TVShow>>("/tv/top_rated");
   return data.results;
+}
+
+export async function getTVSeason(tvId: number, seasonNumber: number): Promise<SeasonDetail> {
+  return tmdbFetch<SeasonDetail>(`/tv/${tvId}/season/${seasonNumber}`);
 }
 
 const ANIME_GENRE_ID = 16;
