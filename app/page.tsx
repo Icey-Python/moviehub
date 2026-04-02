@@ -1,7 +1,7 @@
 import Navbar from "@/app/components/Navbar";
-import Hero from "@/app/components/Hero";
+import HeroCarousel from "@/app/components/HeroCarousel";
 import MovieGrid from "@/app/components/MovieGrid";
-import { getTrending, getPopular, getTopRated, getTrendingTV, getPopularTV, getTopRatedTV, searchMovies, searchTVShows } from "@/app/lib/tmdb";
+import { getTrending, getPopular, getTopRated, getTrendingTV, getPopularTV, getTopRatedTV, searchMovies, searchTVShows, getMovieLogo } from "@/app/lib/tmdb";
 import { getTrendingAnime, getPopularAnime, getTopRatedAnime, searchAnime } from "@/app/lib/anilist";
 
 export default async function HomePage({
@@ -47,13 +47,16 @@ export default async function HomePage({
     getTopRatedAnime(undefined, 10),
   ]);
 
-  const hero = trending[0];
+  const featured = trending.slice(0, 5);
+  const logos = await Promise.all(
+    featured.map((m) => getMovieLogo(m.id).catch(() => null))
+  );
 
   return (
     <>
       <Navbar />
       <main className="mx-auto max-w-7xl px-6 sm:px-8 py-10 space-y-14">
-        {hero && <Hero movie={hero} />}
+        {featured.length > 0 && <HeroCarousel movies={featured} logos={logos} />}
         <MovieGrid movies={trending} title="Trending Movies" />
         <MovieGrid movies={popular} title="Popular Movies" />
         <MovieGrid movies={topRated} title="Top Rated Movies" />

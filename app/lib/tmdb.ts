@@ -1,4 +1,4 @@
-import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail } from "./types";
+import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail, SeasonDetail, Person, PersonCredits, Video, VideosResponse } from "./types";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE = "https://image.tmdb.org/t/p";
@@ -24,6 +24,11 @@ export function posterUrl(path: string | null, size = "w500"): string {
 export function backdropUrl(path: string | null): string {
   if (!path) return "https://placehold.co/1280x720/18181b/a1a1aa?text=No+Image";
   return `${IMAGE_BASE}/w1280${path}`;
+}
+
+export function stillUrl(path: string | null): string {
+  if (!path) return "https://placehold.co/300x169/18181b/a1a1aa?text=No+Image";
+  return `${IMAGE_BASE}/w300${path}`;
 }
 
 export async function getTrending(): Promise<Movie[]> {
@@ -86,6 +91,10 @@ export async function getTopRatedTV(): Promise<TVShow[]> {
   return data.results;
 }
 
+export async function getTVSeason(tvId: number, seasonNumber: number): Promise<SeasonDetail> {
+  return tmdbFetch<SeasonDetail>(`/tv/${tvId}/season/${seasonNumber}`);
+}
+
 const ANIME_GENRE_ID = 16;
 
 export async function getAnimeMovies(): Promise<Movie[]> {
@@ -100,4 +109,63 @@ export async function getAnimeTV(): Promise<TVShow[]> {
     `/discover/tv?with_genres=${ANIME_GENRE_ID}&sort_by=popularity.desc`
   );
   return data.results;
+}
+
+export async function getPerson(id: number): Promise<Person> {
+  return tmdbFetch<Person>(`/person/${id}`);
+}
+
+export async function getPersonCredits(id: number): Promise<PersonCredits> {
+  return tmdbFetch<PersonCredits>(`/person/${id}/combined_credits`);
+}
+
+interface TMDBImage {
+  file_path: string;
+  width: number;
+  height: number;
+  iso_639_1: string | null;
+}
+
+interface TMDBImages {
+  logos: TMDBImage[];
+  backdrops: TMDBImage[];
+  posters: TMDBImage[];
+}
+
+export async function getMovieLogo(id: number): Promise<string | null> {
+  const images = await tmdbFetch<TMDBImages>(`/movie/${id}/images?include_image_language=en,null`);
+  const logo = images.logos.find((l) => l.iso_639_1 === "en") ?? images.logos[0];
+  return logo ? `${IMAGE_BASE}/w500${logo.file_path}` : null;
+}
+
+export async function getTVLogo(id: number): Promise<string | null> {
+  const images = await tmdbFetch<TMDBImages>(`/tv/${id}/images?include_image_language=en,null`);
+  const logo = images.logos.find((l) => l.iso_639_1 === "en") ?? images.logos[0];
+  return logo ? `${IMAGE_BASE}/w500${logo.file_path}` : null;
+}
+
+export function logoUrl(path: string | null): string {
+  if (!path) return "";
+  return path;
+}
+
+async function getVideos(path: string): Promise<Video | null> {
+  try {
+    const data = await tmdbFetch<VideosResponse>(`${path}/videos`);
+    const trailers = data.results.filter(
+      (v) => v.site === "YouTube" && v.type === "Trailer"
+    );
+    const official = trailers.find((v) => v.official) ?? trailers[0];
+    return official ?? data.results.find((v) => v.site === "YouTube") ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getMovieTrailer(id: number): Promise<Video | null> {
+  return getVideos(`/movie/${id}`);
+}
+
+export async function getTVTrailer(id: number): Promise<Video | null> {
+  return getVideos(`/tv/${id}`);
 }

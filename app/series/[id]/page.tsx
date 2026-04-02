@@ -2,26 +2,33 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
-import { getTVShow, getTVShowCredits, posterUrl, backdropUrl } from "@/app/lib/tmdb";
-import { IconPlayerPlay, IconStar, IconCalendar, IconDeviceTv } from "@tabler/icons-react";
+import SeasonTabs from "@/app/components/SeasonTabs";
+import TrailerButton from "@/app/components/TrailerButton";
+import { getTVShow, getTVShowCredits, getTVSeason, getTVLogo, getTVTrailer, posterUrl, backdropUrl } from "@/app/lib/tmdb";
+import { IconPlayerPlay, IconStar, IconCalendar, IconDeviceTv, IconUsers } from "@tabler/icons-react";
 
 export default async function TVDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ season?: string }>;
 }) {
   const { id } = await params;
+  const { season } = await searchParams;
   const tvId = Number(id);
   
   if (isNaN(tvId)) {
     notFound();
   }
 
-  let tv, credits;
+  let tv, credits, logo, trailer;
   try {
-    [tv, credits] = await Promise.all([
+    [tv, credits, logo, trailer] = await Promise.all([
       getTVShow(tvId),
       getTVShowCredits(tvId),
+      getTVLogo(tvId).catch(() => null),
+      getTVTrailer(tvId),
     ]);
   } catch {
     notFound();
@@ -31,13 +38,23 @@ export default async function TVDetailPage({
     notFound();
   }
 
+  const validSeasons = tv.seasons.filter((s) => s.season_number > 0);
+  const activeSeason = season ? Number(season) : (validSeasons[0]?.season_number ?? 1);
+
+  let seasonData;
+  try {
+    seasonData = await getTVSeason(tvId, activeSeason);
+  } catch {
+    seasonData = null;
+  }
+
   const topCast = credits.cast.slice(0, 12);
 
   return (
     <>
       <Navbar />
       <main className="mx-auto max-w-7xl px-6 sm:px-8 py-12">
-        <div className="relative w-full aspect-video max-h-[480px] overflow-hidden rounded-2xl border border-glass-border mb-10">
+        <div className="relative w-full aspect-video max-h-[480px] overflow-hidden border border-glass-border mb-10">
           <Image
             src={backdropUrl(tv.backdrop_path)}
             alt={tv.name}
@@ -47,6 +64,15 @@ export default async function TVDetailPage({
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+          {logo && (
+            <div className="absolute bottom-8 left-8 sm:bottom-12 sm:left-12 lg:bottom-16 lg:left-16">
+              <img
+                src={logo}
+                alt={tv.name}
+                className="w-48 sm:w-64 lg:w-80 h-auto drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]"
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col md:flex-row gap-10">
@@ -111,6 +137,7 @@ export default async function TVDetailPage({
                 <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
                 Watch Now
               </Link>
+              {trailer && <TrailerButton videoKey={trailer.key} />}
             </div>
 
             <div className="mt-8">
@@ -120,12 +147,34 @@ export default async function TVDetailPage({
           </div>
         </div>
 
+        {validSeasons.length > 0 && seasonData && (
+          <SeasonTabs
+            seasons={validSeasons}
+            activeSeason={activeSeason}
+            episodes={seasonData.episodes}
+            tvId={tvId}
+          />
+        )}
+
         {topCast.length > 0 && (
           <section className="mt-14">
-            <h2 className="text-xl font-bold mb-6">Top Cast</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">Top Cast</h2>
+              <Link
+                href={`/series/${tvId}/cast`}
+                className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition-colors"
+              >
+                <IconUsers className="w-4 h-4" stroke={1.5} />
+                View All
+              </Link>
+            </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
               {topCast.map((member) => (
-                <div key={member.id} className="text-center">
+                <Link
+                  key={member.id}
+                  href={`/person/${member.id}`}
+                  className="text-center group"
+                >
                   <div className="relative w-full aspect-square rounded-full overflow-hidden border border-glass-border bg-muted mx-auto">
                     <Image
                       src={
@@ -136,14 +185,14 @@ export default async function TVDetailPage({
                       alt={member.name}
                       fill
                       sizes="185px"
-                      className="object-cover"
+                      className="object-cover group-hover:scale-105 transition-transform"
                     />
                   </div>
-                  <p className="mt-3 text-xs font-medium truncate">{member.name}</p>
+                  <p className="mt-3 text-xs font-medium truncate group-hover:text-accent transition-colors">{member.name}</p>
                   <p className="text-[10px] text-muted-foreground truncate mt-0.5">
                     {member.character}
                   </p>
-                </div>
+                </Link>
               ))}
             </div>
           </section>
