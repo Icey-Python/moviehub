@@ -62,6 +62,36 @@ export interface Credits {
   cast: CastMember[];
 }
 
+export interface Person {
+  id: number;
+  name: string;
+  birthday: string | null;
+  deathday: string | null;
+  gender: number;
+  biography: string;
+  profile_path: string | null;
+  place_of_birth: string | null;
+  popularity: number;
+  known_for_department: string;
+}
+
+export interface PersonCredit {
+  id: number;
+  title?: string;
+  name?: string;
+  poster_path: string | null;
+  release_date?: string;
+  first_air_date?: string;
+  vote_average: number;
+  media_type: "movie" | "tv";
+  character: string;
+  episode_count?: number;
+}
+
+export interface PersonCredits {
+  cast: PersonCredit[];
+}
+
 export interface TVShow {
   id: number;
   name: string;

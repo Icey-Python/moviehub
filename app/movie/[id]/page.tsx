@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import { getMovie, getMovieCredits, posterUrl, backdropUrl } from "@/app/lib/tmdb";
-import { IconPlayerPlay, IconStar, IconClock, IconCalendar } from "@tabler/icons-react";
+import { IconPlayerPlay, IconStar, IconClock, IconCalendar, IconUsers } from "@tabler/icons-react";
 
 export default async function MovieDetailPage({
   params,
@@ -131,10 +131,23 @@ export default async function MovieDetailPage({
         {/* Cast */}
         {topCast.length > 0 && (
           <section className="mt-14">
-            <h2 className="text-xl font-bold mb-6">Top Cast</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">Top Cast</h2>
+              <Link
+                href={`/movie/${movieId}/cast`}
+                className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition-colors"
+              >
+                <IconUsers className="w-4 h-4" stroke={1.5} />
+                View All
+              </Link>
+            </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
               {topCast.map((member) => (
-                <div key={member.id} className="text-center">
+                <Link
+                  key={member.id}
+                  href={`/person/${member.id}`}
+                  className="text-center group"
+                >
                   <div className="relative w-full aspect-square rounded-full overflow-hidden border border-glass-border bg-muted mx-auto">
                     <Image
                       src={
@@ -145,14 +158,14 @@ export default async function MovieDetailPage({
                       alt={member.name}
                       fill
                       sizes="185px"
-                      className="object-cover"
+                      className="object-cover group-hover:scale-105 transition-transform"
                     />
                   </div>
-                  <p className="mt-3 text-xs font-medium truncate">{member.name}</p>
+                  <p className="mt-3 text-xs font-medium truncate group-hover:text-accent transition-colors">{member.name}</p>
                   <p className="text-[10px] text-muted-foreground truncate mt-0.5">
                     {member.character}
                   </p>
-                </div>
+                </Link>
               ))}
             </div>
           </section>

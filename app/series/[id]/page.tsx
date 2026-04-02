@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import SeasonTabs from "@/app/components/SeasonTabs";
 import { getTVShow, getTVShowCredits, getTVSeason, posterUrl, backdropUrl } from "@/app/lib/tmdb";
-import { IconPlayerPlay, IconStar, IconCalendar, IconDeviceTv } from "@tabler/icons-react";
+import { IconPlayerPlay, IconStar, IconCalendar, IconDeviceTv, IconUsers } from "@tabler/icons-react";
 
 export default async function TVDetailPage({
   params,
@@ -145,14 +145,21 @@ export default async function TVDetailPage({
 
         {topCast.length > 0 && (
           <section className="mt-14">
-            <h2 className="text-xl font-bold mb-6">Top Cast</h2>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold">Top Cast</h2>
+              <Link
+                href={`/series/${tvId}/cast`}
+                className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition-colors"
+              >
+                <IconUsers className="w-4 h-4" stroke={1.5} />
+                View All
+              </Link>
+            </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
               {topCast.map((member) => (
-                <a
+                <Link
                   key={member.id}
-                  href={`https://www.themoviedb.org/person/${member.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`/person/${member.id}`}
                   className="text-center group"
                 >
                   <div className="relative w-full aspect-square rounded-full overflow-hidden border border-glass-border bg-muted mx-auto">
@@ -172,7 +179,7 @@ export default async function TVDetailPage({
                   <p className="text-[10px] text-muted-foreground truncate mt-0.5">
                     {member.character}
                   </p>
-                </a>
+                </Link>
               ))}
             </div>
           </section>

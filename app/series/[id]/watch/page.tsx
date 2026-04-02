@@ -14,16 +14,33 @@ export default async function WatchPage({
   const tvId = Number(id);
   if (isNaN(tvId)) notFound();
 
-  const seasonNum = season ? Number(season) : undefined;
-  const episodeNum = ep ? Number(ep) : undefined;
+  const seasonNum = season ? Number(season) : 1;
+  const episodeNum = ep ? Number(ep) : 1;
 
   let title = "TV Show";
+  let seasons: { season_number: number; name: string; episode_count: number }[] = [];
   try {
     const tv = await getTVShow(tvId);
     title = tv.name;
+    seasons = tv.seasons
+      .filter((s) => s.season_number > 0)
+      .map((s) => ({
+        season_number: s.season_number,
+        name: s.name,
+        episode_count: s.episode_count,
+      }));
   } catch {
-    // keep default title
+    // keep defaults
   }
 
-  return <Player movieId={tvId} movieTitle={title} type="tv" season={seasonNum} episode={episodeNum} />;
+  return (
+    <Player
+      movieId={tvId}
+      movieTitle={title}
+      type="tv"
+      season={seasonNum}
+      episode={episodeNum}
+      seasons={seasons}
+    />
+  );
 }

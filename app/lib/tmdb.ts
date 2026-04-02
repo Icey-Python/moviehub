@@ -1,4 +1,4 @@
-import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail, SeasonDetail } from "./types";
+import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail, SeasonDetail, Person, PersonCredits } from "./types";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE = "https://image.tmdb.org/t/p";
@@ -109,4 +109,12 @@ export async function getAnimeTV(): Promise<TVShow[]> {
     `/discover/tv?with_genres=${ANIME_GENRE_ID}&sort_by=popularity.desc`
   );
   return data.results;
+}
+
+export async function getPerson(id: number): Promise<Person> {
+  return tmdbFetch<Person>(`/person/${id}`);
+}
+
+export async function getPersonCredits(id: number): Promise<PersonCredits> {
+  return tmdbFetch<PersonCredits>(`/person/${id}/combined_credits`);
 }
