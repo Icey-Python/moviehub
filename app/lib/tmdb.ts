@@ -1,4 +1,4 @@
-import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail, SeasonDetail, Person, PersonCredits } from "./types";
+import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail, SeasonDetail, Person, PersonCredits, Video, VideosResponse } from "./types";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE = "https://image.tmdb.org/t/p";
@@ -117,4 +117,55 @@ export async function getPerson(id: number): Promise<Person> {
 
 export async function getPersonCredits(id: number): Promise<PersonCredits> {
   return tmdbFetch<PersonCredits>(`/person/${id}/combined_credits`);
+}
+
+interface TMDBImage {
+  file_path: string;
+  width: number;
+  height: number;
+  iso_639_1: string | null;
+}
+
+interface TMDBImages {
+  logos: TMDBImage[];
+  backdrops: TMDBImage[];
+  posters: TMDBImage[];
+}
+
+export async function getMovieLogo(id: number): Promise<string | null> {
+  const images = await tmdbFetch<TMDBImages>(`/movie/${id}/images?include_image_language=en,null`);
+  const logo = images.logos.find((l) => l.iso_639_1 === "en") ?? images.logos[0];
+  return logo ? `${IMAGE_BASE}/w500${logo.file_path}` : null;
+}
+
+export async function getTVLogo(id: number): Promise<string | null> {
+  const images = await tmdbFetch<TMDBImages>(`/tv/${id}/images?include_image_language=en,null`);
+  const logo = images.logos.find((l) => l.iso_639_1 === "en") ?? images.logos[0];
+  return logo ? `${IMAGE_BASE}/w500${logo.file_path}` : null;
+}
+
+export function logoUrl(path: string | null): string {
+  if (!path) return "";
+  return path;
+}
+
+async function getVideos(path: string): Promise<Video | null> {
+  try {
+    const data = await tmdbFetch<VideosResponse>(`${path}/videos`);
+    const trailers = data.results.filter(
+      (v) => v.site === "YouTube" && v.type === "Trailer"
+    );
+    const official = trailers.find((v) => v.official) ?? trailers[0];
+    return official ?? data.results.find((v) => v.site === "YouTube") ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export async function getMovieTrailer(id: number): Promise<Video | null> {
+  return getVideos(`/movie/${id}`);
+}
+
+export async function getTVTrailer(id: number): Promise<Video | null> {
+  return getVideos(`/tv/${id}`);
 }

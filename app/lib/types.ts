@@ -92,6 +92,19 @@ export interface PersonCredits {
   cast: PersonCredit[];
 }
 
+export interface Video {
+  id: string;
+  key: string;
+  name: string;
+  site: string;
+  type: string;
+  official: boolean;
+}
+
+export interface VideosResponse {
+  results: Video[];
+}
+
 export interface TVShow {
   id: number;
   name: string;
