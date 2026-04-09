@@ -43,27 +43,27 @@ export default function MovieGrid({
   return (
     <section>
       {title && (
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold tracking-tight">{title}</h2>
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight">{title}</h2>
           <div className="flex items-center gap-2">
             <button
               onClick={() => scroll("left")}
-              className="w-9 h-9 rounded-lg glass flex items-center justify-center hover:bg-white/[0.08] transition-colors text-muted-foreground hover:text-foreground"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg glass flex items-center justify-center hover:bg-white/[0.08] transition-colors text-muted-foreground hover:text-foreground"
             >
-              <IconChevronLeft className="w-5 h-5" stroke={2} />
+              <IconChevronLeft className="w-4 h-4 sm:w-5 h-5" stroke={2} />
             </button>
             <button
               onClick={() => scroll("right")}
-              className="w-9 h-9 rounded-lg glass flex items-center justify-center hover:bg-white/[0.08] transition-colors text-muted-foreground hover:text-foreground"
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg glass flex items-center justify-center hover:bg-white/[0.08] transition-colors text-muted-foreground hover:text-foreground"
             >
-              <IconChevronRight className="w-5 h-5" stroke={2} />
+              <IconChevronRight className="w-4 h-4 sm:w-5 h-5" stroke={2} />
             </button>
           </div>
         </div>
       )}
       <div
         ref={scrollRef}
-        className="flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2"
+        className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2"
       >
         {movies.map((movie) => (
           <MovieCard

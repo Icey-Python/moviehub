@@ -2,16 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
+import AnimeEpisodes from "@/app/components/AnimeEpisodes";
 import { getAnime } from "@/app/lib/anilist";
 import { IconPlayerPlay, IconStar, IconClock, IconCalendar } from "@tabler/icons-react";
 
 export default async function AnimeDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ ep?: string }>;
 }) {
   const { id } = await params;
+  const { ep } = await searchParams;
   const animeId = Number(id);
+  const currentEpisode = ep ? Number(ep) : 1;
   
   if (isNaN(animeId)) {
     notFound();
@@ -149,6 +154,15 @@ export default async function AnimeDetailPage({
             </div>
           </div>
         </div>
+
+        {anime.episodes && anime.episodes > 1 && (
+          <AnimeEpisodes
+            animeId={animeId}
+            animeTitle={title}
+            episodes={anime.episodes}
+            currentEpisode={currentEpisode}
+          />
+        )}
 
         {topCharacters.length > 0 && (
           <section className="mt-14">
