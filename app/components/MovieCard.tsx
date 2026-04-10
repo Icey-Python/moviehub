@@ -27,7 +27,7 @@ export default function MovieCard({ movie, isTV = false, isAnime = false }: { mo
   const year = date?.slice(0, 4) ?? "—";
   const rating = isAL
     ? (movie.averageScore ? (movie.averageScore / 10).toFixed(1) : "N/A")
-    : movie.vote_average.toFixed(1);
+    : movie.vote_average ? movie.vote_average.toFixed(1) : "N/A";
   const href = isAnime
     ? `/anime/${movie.id}`
     : isTV
@@ -40,26 +40,28 @@ export default function MovieCard({ movie, isTV = false, isAnime = false }: { mo
   return (
     <Link
       href={href}
-      className="group block shrink-0 w-[160px] sm:w-[180px] md:w-[200px] snap-start"
+      className="group block shrink-0 w-[120px] xs:w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] snap-start"
     >
-      <div className="relative aspect-[2/3] rounded-xl overflow-hidden glass-subtle transition-colors duration-200 group-hover:border-white/[0.05]">
+      <div className="relative aspect-[2/3] rounded-lg sm:rounded-xl overflow-hidden glass-subtle transition-colors duration-200 group-hover:border-white/[0.05]">
         <Image
           src={imageSrc}
           alt={title}
           fill
-          sizes="200px"
+          sizes="(max-width: 480px) 140px, (max-width: 640px) 160px, (max-width: 768px) 180px, (max-width: 1024px) 200px, 200px"
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
-        <div className="absolute top-2.5 right-2.5 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1 text-xs font-semibold text-white flex items-center gap-1">
-          <IconStar className="w-3 h-3 text-amber-400" fill="currentColor" stroke={1.5} />
-          {rating}
-        </div>
+        {rating !== "N/A" && (
+          <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm rounded-md sm:rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold text-white flex items-center gap-0.5 sm:gap-1">
+            <IconStar className="w-2.5 h-2.5 sm:w-3 h-3 text-amber-400" fill="currentColor" stroke={1.5} />
+            {rating}
+          </div>
+        )}
       </div>
-      <div className="mt-3 px-0.5">
-        <h3 className="font-semibold text-sm truncate text-card-foreground">
+      <div className="mt-2 sm:mt-3 px-0.5">
+        <h3 className="font-semibold text-xs sm:text-sm truncate text-card-foreground">
           {title}
         </h3>
-        <p className="text-xs text-muted-foreground mt-0.5">{year}</p>
+        <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{year}</p>
       </div>
     </Link>
   );

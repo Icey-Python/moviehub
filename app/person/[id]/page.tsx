@@ -8,7 +8,9 @@ import { IconCake, IconMapPin, IconBriefcase } from "@tabler/icons-react";
 function calculateAge(birthday: string | null, deathday: string | null): number | null {
   if (!birthday) return null;
   const birth = new Date(birthday);
+  if (isNaN(birth.getTime())) return null;
   const end = deathday ? new Date(deathday) : new Date();
+  if (isNaN(end.getTime())) return null;
   let age = end.getFullYear() - birth.getFullYear();
   const m = end.getMonth() - birth.getMonth();
   if (m < 0 || (m === 0 && end.getDate() < birth.getDate())) age--;
@@ -17,7 +19,9 @@ function calculateAge(birthday: string | null, deathday: string | null): number 
 
 function formatDate(date: string | null): string {
   if (!date) return "";
-  return new Date(date).toLocaleDateString("en-US", {
+  const d = new Date(date);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -146,7 +150,7 @@ export default async function PersonPage({
                     poster_path: credit.poster_path,
                     backdrop_path: null,
                     release_date: credit.release_date || "",
-                    vote_average: credit.vote_average,
+                    vote_average: credit.vote_average ?? 0,
                     vote_count: 0,
                     genre_ids: [],
                     popularity: 0,
@@ -173,7 +177,7 @@ export default async function PersonPage({
                     poster_path: credit.poster_path,
                     backdrop_path: null,
                     first_air_date: credit.first_air_date || "",
-                    vote_average: credit.vote_average,
+                    vote_average: credit.vote_average ?? 0,
                     vote_count: 0,
                     genre_ids: [],
                     popularity: 0,
