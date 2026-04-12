@@ -40,28 +40,28 @@ export default function MovieCard({ movie, isTV = false, isAnime = false }: { mo
   return (
     <Link
       href={href}
-      className="group block shrink-0 w-[120px] xs:w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] snap-start"
+      className="group block shrink-0 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1rem)] md:w-[140px] lg:w-[160px] snap-start"
     >
-      <div className="relative aspect-[2/3] rounded-lg sm:rounded-xl overflow-hidden glass-subtle transition-colors duration-200 group-hover:border-white/[0.05]">
+      <div className="relative aspect-[2/3] rounded-md sm:rounded-lg overflow-hidden glass-subtle transition-colors duration-200 group-hover:border-white/[0.05]">
         <Image
           src={imageSrc}
           alt={title}
           fill
-          sizes="(max-width: 480px) 140px, (max-width: 640px) 160px, (max-width: 768px) 180px, (max-width: 1024px) 200px, 200px"
+          sizes="90px sm:130px md:150px lg:170px xl:190px"
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
         {rating !== "N/A" && (
-          <div className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm rounded-md sm:rounded-lg px-1.5 sm:px-2 py-0.5 sm:py-1 text-[10px] sm:text-xs font-semibold text-white flex items-center gap-0.5 sm:gap-1">
-            <IconStar className="w-2.5 h-2.5 sm:w-3 h-3 text-amber-400" fill="currentColor" stroke={1.5} />
+          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 bg-black/70 backdrop-blur-sm rounded px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold text-white flex items-center gap-0.5">
+            <IconStar className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-amber-400" fill="currentColor" stroke={1.5} />
             {rating}
           </div>
         )}
       </div>
-      <div className="mt-2 sm:mt-3 px-0.5">
-        <h3 className="font-semibold text-xs sm:text-sm truncate text-card-foreground">
+      <div className="mt-1.5 sm:mt-2 px-0.5">
+        <h3 className="font-semibold text-[10px] sm:text-xs truncate text-card-foreground">
           {title}
         </h3>
-        <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{year}</p>
+        <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{year}</p>
       </div>
     </Link>
   );
