@@ -1,6 +1,7 @@
 import Navbar from "@/app/components/Navbar";
 import HeroCarousel from "@/app/components/HeroCarousel";
 import MovieGrid from "@/app/components/MovieGrid";
+import ContinueWatching from "@/app/components/ContinueWatching";
 import { getTrending, getPopular, getTopRated, getTrendingTV, getPopularTV, getTopRatedTV, searchMovies, searchTVShows, getMovieLogo } from "@/app/lib/tmdb";
 import { getTrendingAnime, getPopularAnime, getTopRatedAnime, searchAnime } from "@/app/lib/anilist";
 
@@ -57,6 +58,7 @@ export default async function HomePage({
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-10 space-y-10 sm:space-y-12 md:space-y-14">
         {featured.length > 0 && <HeroCarousel movies={featured} logos={logos} />}
+        <ContinueWatching />
         <MovieGrid movies={trending} title="Trending Movies" />
         <MovieGrid movies={popular} title="Popular Movies" />
         <MovieGrid movies={topRated} title="Top Rated Movies" />

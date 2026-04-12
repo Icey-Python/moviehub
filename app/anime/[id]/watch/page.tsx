@@ -52,6 +52,7 @@ export default async function WatchPage({
   }
 
   const episode = ep ? Number(ep) : 1;
+  const poster = anime.coverImage.large || anime.coverImage.medium || "";
 
   return (
     <AnimePlayer
@@ -60,6 +61,7 @@ export default async function WatchPage({
       episodes={anime.episodes}
       episode={episode}
       anilistId={anime.id}
+      poster={poster}
     />
   );
 }
