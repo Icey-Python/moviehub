@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { IconArrowLeft, IconPlayerSkipBack, IconPlayerSkipForward } from "@tabler/icons-react";
@@ -10,6 +11,7 @@ interface AnimePlayerProps {
   episodes: number;
   episode: number;
   anilistId?: number;
+  poster?: string;
 }
 
 const EMBED_PROVIDERS = [
@@ -33,7 +35,7 @@ const EMBED_PROVIDERS = [
   },
 ];
 
-export default function AnimePlayer({ animeId, animeTitle, episodes, episode, anilistId }: AnimePlayerProps) {
+export default function AnimePlayer({ animeId, animeTitle, episodes, episode, anilistId, poster }: AnimePlayerProps) {
   const [providerIndex, setProviderIndex] = useState(0);
 
   const currentProvider = EMBED_PROVIDERS[providerIndex];
@@ -42,6 +44,31 @@ export default function AnimePlayer({ animeId, animeTitle, episodes, episode, an
   const handleProviderChange = () => {
     setProviderIndex((prev) => (prev + 1) % EMBED_PROVIDERS.length);
   };
+
+  useEffect(() => {
+    const STORAGE_KEY = "moviehub_watch_progress";
+    const progress = {
+      id: animeId,
+      type: "anime" as const,
+      title: animeTitle,
+      poster: poster || "",
+      episode: episode,
+      episodeTitle: `Episode ${episode}`,
+      progress: 0,
+      updatedAt: Date.now(),
+    };
+
+    try {
+      const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      const filtered = stored.filter(
+        (p: typeof progress) => !(p.id === animeId && p.type === "anime")
+      );
+      const updated = [progress, ...filtered].slice(0, 20);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } catch {
+      // ignore
+    }
+  }, [animeId, animeTitle, episode, poster]);
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col z-50">

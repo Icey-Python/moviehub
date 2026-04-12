@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Player from "@/app/components/Player";
-import { getTVShow } from "@/app/lib/tmdb";
+import { getTVShow, posterUrl } from "@/app/lib/tmdb";
 
 export default async function WatchPage({
   params,
@@ -17,10 +17,11 @@ export default async function WatchPage({
   const seasonNum = season ? Number(season) : 1;
   const episodeNum = ep ? Number(ep) : 1;
 
+  let tv;
   let title = "TV Show";
   let seasons: { season_number: number; name: string; episode_count: number }[] = [];
   try {
-    const tv = await getTVShow(tvId);
+    tv = await getTVShow(tvId);
     title = tv.name;
     seasons = tv.seasons
       .filter((s) => s.season_number > 0)
@@ -33,6 +34,8 @@ export default async function WatchPage({
     // keep defaults
   }
 
+  const poster = tv?.poster_path ? posterUrl(tv.poster_path, "w342") : "";
+
   return (
     <Player
       movieId={tvId}
@@ -41,6 +44,7 @@ export default async function WatchPage({
       season={seasonNum}
       episode={episodeNum}
       seasons={seasons}
+      poster={poster}
     />
   );
 }
