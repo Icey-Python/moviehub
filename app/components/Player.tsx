@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import {
   IconArrowLeft,
@@ -61,9 +61,6 @@ export default function Player({
 }: PlayerProps) {
   const [source, setSource] = useState<Source>("vidsrc");
   const [pickerOpen, setPickerOpen] = useState(false);
-  const [showNextModal, setShowNextModal] = useState(false);
-  const [countdown, setCountdown] = useState(30);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const currentSeason = season ?? 1;
   const currentEpisode = episode ?? 1;
@@ -125,42 +122,6 @@ export default function Player({
       episodeTitle,
     });
   }, [type, movieId, movieTitle, poster, currentSeason, currentEpisode, episode, episodeTitle]);
-
-  const cancelCountdown = useCallback(() => {
-    setShowNextModal(false);
-    setCountdown(30);
-    if (timerRef.current) clearInterval(timerRef.current);
-  }, []);
-
-  const startCountdown = useCallback(() => {
-    setShowNextModal(true);
-    setCountdown(30);
-    timerRef.current = setInterval(() => {
-      setCountdown((c) => {
-        if (c <= 1) {
-          if (timerRef.current) clearInterval(timerRef.current);
-          if (episodeLinks?.next) {
-            window.location.href = episodeLinks.next;
-          }
-          return 30;
-        }
-        return c - 1;
-      });
-    }, 1000);
-  }, [episodeLinks]);
-
-  // Auto next for TV/anime after some time
-  useEffect(() => {
-    if (type === "movie" || !episodeLinks?.next) return;
-
-    const autoTimer = setTimeout(() => {
-      if (!showNextModal) {
-        startCountdown();
-      }
-    }, 40 * 60 * 1000); // 40 minutes
-
-    return () => clearTimeout(autoTimer);
-  }, [type, episodeLinks, showNextModal, startCountdown]);
 
   function getEmbedUrl(src: Source): string {
     if (src === "vidking") {
@@ -290,26 +251,6 @@ export default function Player({
       </div>
 
       <iframe src={embedUrl} className="flex-1 w-full h-full" key={`${source}-${currentSeason}-${currentEpisode}`} allowFullScreen />
-
-      {showNextModal && episodeLinks?.next && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80">
-          <div className="bg-zinc-900 rounded-2xl p-6 sm:p-8 max-w-sm w-full mx-4 text-center border border-glass-border">
-            <h3 className="text-lg sm:text-xl font-semibold mb-2">Up Next</h3>
-            <p className="text-zinc-400 mb-6">
-              Starting in <span className="text-accent font-bold text-2xl">{countdown}</span> seconds...
-            </p>
-            <div className="flex gap-3 justify-center">
-              <button onClick={cancelCountdown} className="px-5 py-2.5 rounded-xl glass font-medium hover:bg-white/[0.08]">
-                Cancel
-              </button>
-              <Link href={episodeLinks.next} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-medium hover:bg-accent-hover">
-                <IconPlayerPlay className="w-5 h-5" fill="currentColor" />
-                Play Now
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
