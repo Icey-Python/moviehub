@@ -3,7 +3,16 @@ import HeroCarousel from "@/app/components/HeroCarousel";
 import MovieGrid from "@/app/components/MovieGrid";
 import ContinueWatching from "@/app/components/ContinueWatching";
 import { getTrending, getPopular, getTopRated, getTrendingTV, getPopularTV, getTopRatedTV, searchMovies, searchTVShows, getMovieLogo } from "@/app/lib/tmdb";
-import { getTrendingAnime, getPopularAnime, getTopRatedAnime, searchAnime } from "@/app/lib/anilist";
+import { getTrendingAnime, getPopularAnime, getTopRatedAnime, searchAnime, type AnilistMedia } from "@/app/lib/anilist";
+
+async function getAnilistSafe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fn();
+  } catch (e) {
+    console.warn(`Anilist API failed: ${e}`);
+    return fallback;
+  }
+}
 
 export default async function HomePage({
   searchParams,
@@ -17,7 +26,7 @@ export default async function HomePage({
     const [movies, tvShows, anime] = await Promise.all([
       searchMovies(query),
       searchTVShows(query),
-      searchAnime(query),
+      getAnilistSafe(() => searchAnime(query), { media: [] as AnilistMedia[], pageInfo: { currentPage: 1, lastPage: 1, hasNextPage: false, perPage: 10, total: 0 } }),
     ]);
 
     return (
@@ -43,9 +52,9 @@ export default async function HomePage({
     getTrendingTV(),
     getPopularTV(),
     getTopRatedTV(),
-    getTrendingAnime(undefined, 10),
-    getPopularAnime(undefined, 10),
-    getTopRatedAnime(undefined, 10),
+    getAnilistSafe(() => getTrendingAnime(undefined, 10), { media: [] as AnilistMedia[], pageInfo: { currentPage: 1, lastPage: 1, hasNextPage: false, perPage: 10, total: 0 } }),
+    getAnilistSafe(() => getPopularAnime(undefined, 10), { media: [] as AnilistMedia[], pageInfo: { currentPage: 1, lastPage: 1, hasNextPage: false, perPage: 10, total: 0 } }),
+    getAnilistSafe(() => getTopRatedAnime(undefined, 10), { media: [] as AnilistMedia[], pageInfo: { currentPage: 1, lastPage: 1, hasNextPage: false, perPage: 10, total: 0 } }),
   ]);
 
   const featured = trending.slice(0, 5);
@@ -65,11 +74,13 @@ export default async function HomePage({
         <MovieGrid movies={trendingTV} title="Trending TV Shows" isTV />
         <MovieGrid movies={popularTV} title="Popular TV Shows" isTV />
         <MovieGrid movies={topRatedTV} title="Top Rated TV Shows" isTV />
-        <div className="hidden sm:block">
-          <MovieGrid movies={trendingAnime.media} title="Trending Anime" isAnime />
-          <MovieGrid movies={popularAnime.media} title="Popular Anime" isAnime />
-          <MovieGrid movies={topRatedAnime.media} title="Top Rated Anime" isAnime />
-        </div>
+        {trendingAnime.media.length > 0 && (
+          <div className="hidden sm:block">
+            <MovieGrid movies={trendingAnime.media} title="Trending Anime" isAnime />
+            <MovieGrid movies={popularAnime.media} title="Popular Anime" isAnime />
+            <MovieGrid movies={topRatedAnime.media} title="Top Rated Anime" isAnime />
+          </div>
+        )}
       </main>
     </>
   );
