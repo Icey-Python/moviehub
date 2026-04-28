@@ -7,9 +7,15 @@ async function anilistFetch<T>(query: string, variables: Record<string, unknown>
     body: JSON.stringify({ query, variables }),
     next: { revalidate: 3600 },
   });
-  if (!res.ok) throw new Error(`Anilist error: ${res.status}`);
+  if (!res.ok) {
+    console.warn(`Anilist API error: ${res.status}`);
+    throw new Error(`Anilist error: ${res.status}`);
+  }
   const json = await res.json();
-  if (json.errors?.length) throw new Error(json.errors[0].message);
+  if (json.errors?.length) {
+    console.warn(`Anilist GraphQL error: ${json.errors[0].message}`);
+    throw new Error(json.errors[0].message);
+  }
   return json.data;
 }
 
