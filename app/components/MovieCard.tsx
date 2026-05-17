@@ -40,15 +40,15 @@ export default function MovieCard({ movie, isTV = false, isAnime = false }: { mo
   return (
     <Link
       href={href}
-      className="group block shrink-0 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1rem)] md:w-[140px] lg:w-[160px] snap-start"
+      className="group block shrink-0 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1rem)] md:w-[140px] lg:w-[160px] snap-start active:scale-[0.97]"
     >
-      <div className="relative aspect-[2/3] rounded-md sm:rounded-lg overflow-hidden glass-subtle transition-colors duration-200 group-hover:border-white/[0.05]">
+      <div className="relative aspect-[2/3] rounded-md sm:rounded-lg overflow-hidden glass-subtle transition-colors duration-200">
         <Image
           src={imageSrc}
           alt={title}
           fill
           sizes="90px sm:130px md:150px lg:170px xl:190px"
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-200 ease-out group-hover:scale-105"
         />
         {rating !== "N/A" && (
           <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 bg-black/70 backdrop-blur-sm rounded px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold text-white flex items-center gap-0.5">

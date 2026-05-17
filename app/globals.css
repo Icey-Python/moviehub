@@ -15,6 +15,9 @@
   --glass-bg: rgba(255, 255, 255, 0.04);
   --glass-border: rgba(255, 255, 255, 0.03);
   --glass-highlight: rgba(255, 255, 255, 0.03);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 @theme inline {
@@ -35,6 +38,16 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --breakpoint-xs: 480px;
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+}
+
+@layer utilities {
+  .transition-transform {
+    transition-property: transform;
+    transition-timing-function: var(--ease-out);
+    transition-duration: 160ms;
+  }
 }
 
 * {
@@ -85,4 +98,24 @@ html {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .interactive-scale:hover {
+    transform: scale(1.02);
+  }
+}
+
+.interactive-scale:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

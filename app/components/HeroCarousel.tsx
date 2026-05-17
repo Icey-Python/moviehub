@@ -89,14 +89,14 @@ export default function HeroCarousel({ movies, logos }: { movies: Movie[]; logos
         <div className="mt-3 flex gap-2">
           <Link
             href={`/movie/${movie.id}/watch`}
-            className="flex items-center gap-1.5 h-8 sm:h-9 px-3 sm:px-4 rounded-md bg-accent text-white font-medium text-[10px] sm:text-xs hover:bg-accent-hover transition-colors"
+            className="flex items-center gap-1.5 h-8 sm:h-9 px-3 sm:px-4 rounded-md bg-accent text-white font-medium text-[10px] sm:text-xs hover:bg-accent-hover transition-colors active:scale-[0.97] active:transition-transform"
           >
             <IconPlayerPlay className="w-3 h-3" fill="currentColor" stroke={1.5} />
             <span>Watch</span>
           </Link>
           <Link
             href={`/movie/${movie.id}`}
-            className="flex items-center gap-1.5 h-8 sm:h-9 px-3 sm:px-4 rounded-md glass text-[10px] sm:text-xs font-medium hover:bg-white/[0.08] transition-colors"
+            className="flex items-center gap-1.5 h-8 sm:h-9 px-3 sm:px-4 rounded-md glass text-[10px] sm:text-xs font-medium hover:bg-white/[0.08] transition-colors active:scale-[0.97] active:transition-transform"
           >
             <IconInfoCircle className="w-3 h-3" stroke={1.5} />
             <span>Info</span>
@@ -106,13 +106,13 @@ export default function HeroCarousel({ movies, logos }: { movies: Movie[]; logos
 
       <button
         onClick={prev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full glass bg-black/40 text-white hover:bg-black/60 transition-colors z-10 hidden sm:flex"
+        className="absolute left-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full glass bg-black/40 text-white hover:bg-black/60 transition-colors z-10 hidden sm:flex active:scale-[0.95] active:transition-transform"
       >
         <IconChevronLeft className="w-4 h-4" stroke={2} />
       </button>
       <button
         onClick={next}
-        className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full glass bg-black/40 text-white hover:bg-black/60 transition-colors z-10 hidden sm:flex"
+        className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full glass bg-black/40 text-white hover:bg-black/60 transition-colors z-10 hidden sm:flex active:scale-[0.95] active:transition-transform"
       >
         <IconChevronRight className="w-4 h-4" stroke={2} />
       </button>

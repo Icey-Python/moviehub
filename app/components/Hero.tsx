@@ -40,14 +40,14 @@ export default function Hero({ movie }: { movie: Movie }) {
         <div className="mt-6 flex gap-4">
           <Link
             href={`/movie/${movie.id}/watch`}
-            className="inline-flex items-center gap-2.5 h-12 px-7 rounded-xl bg-accent text-white font-medium text-sm hover:bg-accent-hover transition-colors"
+            className="inline-flex items-center gap-2.5 h-12 px-7 rounded-xl bg-accent text-white font-medium text-sm hover:bg-accent-hover transition-colors active:scale-[0.97] active:transition-transform"
           >
             <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
             Watch Now
           </Link>
           <Link
             href={`/movie/${movie.id}`}
-            className="inline-flex items-center gap-2 h-12 px-7 rounded-xl glass text-sm font-medium hover:bg-white/[0.08] transition-colors"
+            className="inline-flex items-center gap-2 h-12 px-7 rounded-xl glass text-sm font-medium hover:bg-white/[0.08] transition-colors active:scale-[0.97] active:transition-transform"
           >
             <IconInfoCircle className="w-5 h-5" stroke={1.5} />
             Details
