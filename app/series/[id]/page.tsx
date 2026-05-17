@@ -53,8 +53,8 @@ export default async function TVDetailPage({
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-7xl px-6 sm:px-8 py-12">
-        <div className="relative w-full aspect-video max-h-[480px] overflow-hidden border border-glass-border mb-10">
+      <main className="page-container py-8 sm:py-10 md:py-12">
+        <div className="relative w-full aspect-video max-h-[480px] overflow-hidden rounded-2xl border border-border/50 mb-8 sm:mb-10">
           <Image
             src={backdropUrl(tv.backdrop_path)}
             alt={tv.name}
@@ -65,52 +65,52 @@ export default async function TVDetailPage({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
           {logo && (
-            <div className="absolute bottom-8 left-8 sm:bottom-12 sm:left-12 lg:bottom-16 lg:left-16">
+            <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 lg:bottom-12 lg:left-12">
               <img
                 src={logo}
                 alt={tv.name}
-                className="w-48 sm:w-64 lg:w-80 h-auto drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]"
+                className="w-36 sm:w-48 lg:w-64 h-auto drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]"
               />
             </div>
           )}
         </div>
 
-        <div className="flex flex-col md:flex-row gap-10">
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-10">
           <div className="shrink-0">
-            <div className="relative w-52 md:w-64 aspect-[2/3] rounded-xl overflow-hidden border border-glass-border mx-auto md:mx-0">
+            <div className="relative w-44 sm:w-52 md:w-60 aspect-[2/3] rounded-xl overflow-hidden border border-border/50 mx-auto md:mx-0 bg-background-elevated">
               <Image
                 src={posterUrl(tv.poster_path, "w500")}
                 alt={tv.name}
                 fill
-                sizes="(max-width: 768px) 208px, 256px"
+                sizes="(max-width: 768px) 176px, 240px"
                 className="object-cover"
               />
             </div>
           </div>
 
           <div className="flex-1 min-w-0">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
               {tv.name}
             </h1>
             {tv.tagline && (
-              <p className="text-muted-foreground italic mt-2">{tv.tagline}</p>
+              <p className="text-foreground-secondary italic mt-2">{tv.tagline}</p>
             )}
 
-            <div className="flex flex-wrap items-center gap-4 mt-5 text-sm">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-5 text-sm">
               <span className="flex items-center gap-1.5">
                 <IconStar className="w-4 h-4 text-amber-400" fill="currentColor" stroke={1.5} />
                 <span className="font-semibold">{tv.vote_average.toFixed(1)}</span>
-                <span className="text-muted-foreground">({tv.vote_count.toLocaleString()} votes)</span>
+                <span className="text-muted-foreground">({tv.vote_count.toLocaleString()})</span>
               </span>
-              <span className="text-muted-foreground/50">|</span>
-              <span className="flex items-center gap-1.5 text-zinc-400">
+              <span className="text-border/50">|</span>
+              <span className="flex items-center gap-1.5 text-foreground-secondary">
                 <IconCalendar className="w-4 h-4" stroke={1.5} />
                 {tv.first_air_date}
               </span>
               {tv.number_of_seasons && tv.number_of_episodes && (
                 <>
-                  <span className="text-muted-foreground/50">|</span>
-                  <span className="flex items-center gap-1.5 text-zinc-400">
+                  <span className="text-border/50">|</span>
+                  <span className="flex items-center gap-1.5 text-foreground-secondary">
                     <IconDeviceTv className="w-4 h-4" stroke={1.5} />
                     {tv.number_of_seasons} seasons, {tv.number_of_episodes} episodes
                   </span>
@@ -118,31 +118,30 @@ export default async function TVDetailPage({
               )}
             </div>
 
-            <div className="flex flex-wrap gap-2.5 mt-5">
+            <div className="flex flex-wrap gap-2 mt-5">
               {tv.genres.map((g) => (
                 <span
                   key={g.id}
-                  className="px-3.5 py-1.5 rounded-full text-xs font-medium glass"
+                  className="h-8 px-3 rounded-lg text-xs font-medium glass flex items-center"
                 >
                   {g.name}
                 </span>
               ))}
             </div>
 
-            <div className="mt-8 flex gap-4">
-              <Link
-                href={`/series/${tv.id}/watch`}
-                className="inline-flex items-center gap-2.5 h-12 px-7 rounded-xl bg-accent text-white font-medium text-sm hover:bg-accent-hover transition-colors"
-              >
-                <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
-                Watch Now
+            <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
+              <Link href={`/series/${tv.id}/watch`}>
+                <button className="btn-primary rounded-xl">
+                  <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
+                  Watch Now
+                </button>
               </Link>
-              {trailer && <TrailerButton videoKey={trailer.key} />}
+              {trailer && <TrailerButton videoKey={trailer.key} title={tv.name} />}
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6 sm:mt-8">
               <h2 className="text-lg font-semibold mb-3">Overview</h2>
-              <p className="text-zinc-400 leading-relaxed">{tv.overview}</p>
+              <p className="text-foreground-secondary leading-relaxed">{tv.overview}</p>
             </div>
           </div>
         </div>
@@ -157,25 +156,25 @@ export default async function TVDetailPage({
         )}
 
         {topCast.length > 0 && (
-          <section className="mt-14">
+          <section className="mt-12 sm:mt-14">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold">Top Cast</h2>
+              <h2 className="section-heading mb-0">Top Cast</h2>
               <Link
                 href={`/series/${tvId}/cast`}
-                className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition-colors"
+                className="h-10 px-4 rounded-xl text-sm text-foreground-secondary hover:text-white transition-colors flex items-center gap-1.5"
               >
                 <IconUsers className="w-4 h-4" stroke={1.5} />
                 View All
               </Link>
             </div>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 sm:gap-6">
               {topCast.map((member) => (
                 <Link
                   key={member.id}
                   href={`/person/${member.id}`}
-                  className="text-center group"
+                  className="flex flex-col items-center text-center group"
                 >
-                  <div className="relative w-full aspect-square rounded-full overflow-hidden border border-glass-border bg-muted mx-auto">
+                  <div className="relative w-full aspect-square rounded-full overflow-hidden border border-border/50 bg-background-elevated">
                     <Image
                       src={
                         member.profile_path
@@ -185,11 +184,11 @@ export default async function TVDetailPage({
                       alt={member.name}
                       fill
                       sizes="185px"
-                      className="object-cover group-hover:scale-105 transition-transform"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <p className="mt-3 text-xs font-medium truncate group-hover:text-accent transition-colors">{member.name}</p>
-                  <p className="text-[10px] text-muted-foreground truncate mt-0.5">
+                  <p className="mt-3 text-xs sm:text-sm font-medium truncate w-full group-hover:text-accent transition-colors">{member.name}</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground truncate w-full mt-0.5">
                     {member.character}
                   </p>
                 </Link>

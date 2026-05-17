@@ -6,7 +6,7 @@ import { IconPlayerPlay, IconStar, IconInfoCircle } from "@tabler/icons-react";
 
 export default function Hero({ movie }: { movie: Movie }) {
   return (
-    <section className="relative w-full aspect-video max-h-[600px] overflow-hidden rounded-2xl border border-glass-border">
+    <section className="relative w-full aspect-video max-h-[600px] overflow-hidden rounded-2xl border border-border/50">
       <Image
         src={backdropUrl(movie.backdrop_path)}
         alt={movie.title}
@@ -16,17 +16,18 @@ export default function Hero({ movie }: { movie: Movie }) {
         className="object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-      <div className="absolute inset-0 flex flex-col justify-end p-8 sm:p-12 lg:p-16">
-        <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em] mb-3">
+      <div className="absolute inset-0 bg-gradient-radial from-accent/10 via-transparent to-transparent opacity-50" />
+      <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10 lg:p-16">
+        <span className="text-xs font-semibold text-accent uppercase tracking-[0.2em] mb-2">
           Featured
         </span>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight max-w-3xl leading-tight">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight max-w-3xl leading-tight">
           {movie.title}
         </h1>
-        <p className="mt-4 text-sm sm:text-base text-zinc-400 max-w-xl line-clamp-3 leading-relaxed">
+        <p className="mt-3 text-sm sm:text-base text-zinc-400 max-w-xl line-clamp-3 leading-relaxed">
           {movie.overview}
         </p>
-        <div className="mt-5 flex items-center gap-4">
+        <div className="mt-4 flex items-center gap-4">
           <div className="flex items-center gap-1.5 text-sm">
             <IconStar className="w-4 h-4 text-amber-400" fill="currentColor" stroke={1.5} />
             <span className="font-semibold">{movie.vote_average.toFixed(1)}</span>
@@ -37,20 +38,18 @@ export default function Hero({ movie }: { movie: Movie }) {
             {movie.release_date?.slice(0, 4)}
           </span>
         </div>
-        <div className="mt-6 flex gap-4">
-          <Link
-            href={`/movie/${movie.id}/watch`}
-            className="inline-flex items-center gap-2.5 h-12 px-7 rounded-xl bg-accent text-white font-medium text-sm hover:bg-accent-hover transition-colors active:scale-[0.97] active:transition-transform"
-          >
-            <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
-            Watch Now
+        <div className="mt-6 flex gap-3">
+          <Link href={`/movie/${movie.id}/watch`}>
+            <button className="btn-primary rounded-xl">
+              <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
+              Watch Now
+            </button>
           </Link>
-          <Link
-            href={`/movie/${movie.id}`}
-            className="inline-flex items-center gap-2 h-12 px-7 rounded-xl glass text-sm font-medium hover:bg-white/[0.08] transition-colors active:scale-[0.97] active:transition-transform"
-          >
-            <IconInfoCircle className="w-5 h-5" stroke={1.5} />
-            Details
+          <Link href={`/movie/${movie.id}`}>
+            <button className="btn-secondary rounded-xl">
+              <IconInfoCircle className="w-5 h-5" stroke={1.5} />
+              Details
+            </button>
           </Link>
         </div>
       </div>

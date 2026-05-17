@@ -35,17 +35,18 @@ export default function SeasonTabs({
   );
 
   return (
-    <section className="mt-14">
-      <h2 className="text-xl font-bold mb-6">Episodes</h2>
+    <section className="mt-12 sm:mt-14">
+      <h2 className="section-heading">Episodes</h2>
 
-      {/* Season Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-8">
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-6" role="tablist" aria-label="Seasons">
         {seasons.map((season) => (
           <Link
             key={season.season_number}
             href={`/series/${tvId}?season=${season.season_number}`}
             scroll={false}
-            className={`shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            role="tab"
+            aria-selected={season.season_number === activeSeason}
+            className={`shrink-0 h-10 px-4 rounded-xl text-sm font-medium transition-all duration-200 ${
               season.season_number === activeSeason
                 ? "bg-accent text-white"
                 : "glass hover:bg-white/10"
@@ -59,44 +60,39 @@ export default function SeasonTabs({
         ))}
       </div>
 
-      {/* Episode Grid */}
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         {paginatedEpisodes.map((episode) => (
-          <div
+          <Link
             key={episode.id}
-            className="flex gap-4 glass-subtle rounded-xl overflow-hidden hover:bg-white/[0.04] transition-colors"
+            href={`/series/${tvId}/watch?season=${episode.season_number}&ep=${episode.episode_number}`}
+            className="flex gap-3 sm:gap-4 glass-subtle rounded-xl overflow-hidden hover:bg-white/[0.04] transition-all duration-200 group"
           >
-            {/* Episode Still */}
-            <Link
-              href={`/series/${tvId}/watch?season=${episode.season_number}&ep=${episode.episode_number}`}
-              className="relative shrink-0 w-40 md:w-56 aspect-video"
-            >
+            <div className="relative shrink-0 w-36 sm:w-44 md:w-56 aspect-video bg-background-elevated">
               <Image
                 src={stillUrl(episode.still_path)}
                 alt={episode.name}
                 fill
-                sizes="(max-width: 768px) 160px, 224px"
+                sizes="(max-width: 768px) 144px, 224px"
                 className="object-cover"
               />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
                 <IconPlayerPlay
                   className="w-8 h-8 text-white"
                   fill="currentColor"
                   stroke={1.5}
                 />
               </div>
-            </Link>
+            </div>
 
-            {/* Episode Info */}
-            <div className="flex-1 min-w-0 py-3 pr-4">
+            <div className="flex-1 min-w-0 py-3 pr-3 sm:pr-4">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">
+                  <p className="text-[10px] sm:text-xs text-muted-foreground mb-1">
                     S{episode.season_number}E{episode.episode_number}
                     {episode.air_date && ` · ${episode.air_date}`}
                     {episode.runtime && ` · ${episode.runtime}m`}
                   </p>
-                  <h3 className="font-semibold text-sm md:text-base truncate">
+                  <h3 className="font-semibold text-sm sm:text-base truncate">
                     {episode.name}
                   </h3>
                 </div>
@@ -111,19 +107,19 @@ export default function SeasonTabs({
                 {episode.overview || "No description available."}
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-3 mt-6">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="p-2 rounded-lg glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-10 h-10 rounded-xl glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            aria-label="Previous page"
           >
-            <IconChevronLeft className="w-4 h-4" stroke={2} />
+            <IconChevronLeft className="w-5 h-5" stroke={2} />
           </button>
           <span className="text-sm text-muted-foreground">
             {page} / {totalPages}
@@ -131,9 +127,10 @@ export default function SeasonTabs({
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="p-2 rounded-lg glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="w-10 h-10 rounded-xl glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            aria-label="Next page"
           >
-            <IconChevronRight className="w-4 h-4" stroke={2} />
+            <IconChevronRight className="w-5 h-5" stroke={2} />
           </button>
         </div>
       )}

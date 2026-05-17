@@ -10,9 +10,10 @@ export default function TrailerButton({ videoKey, title }: { videoKey: string; t
     <>
       <button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center gap-2.5 h-12 px-7 rounded-xl glass text-sm font-medium hover:bg-white/[0.08] transition-colors"
+        className="btn-secondary rounded-xl"
+        aria-label="Watch trailer"
       >
-        <IconBrandYoutube className="w-5 h-5 text-red-500" stroke={1.5} />
+        <IconBrandYoutube className="w-5 h-5 text-accent" stroke={1.5} />
         Watch Trailer
       </button>
 
@@ -20,6 +21,9 @@ export default function TrailerButton({ videoKey, title }: { videoKey: string; t
         <div
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm"
           onClick={() => setOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Trailer player"
         >
           <div
             className="relative w-full max-w-5xl mx-4"
@@ -27,16 +31,18 @@ export default function TrailerButton({ videoKey, title }: { videoKey: string; t
           >
             <button
               onClick={() => setOpen(false)}
-              className="absolute -top-10 right-0 p-1 text-zinc-400 hover:text-white transition-colors"
+              className="absolute -top-12 right-0 w-10 h-10 text-zinc-400 hover:text-white transition-colors rounded-lg hover:bg-white/10"
+              aria-label="Close trailer"
             >
               <IconX className="w-6 h-6" stroke={2} />
             </button>
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden">
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-border/50">
               <iframe
                 src={`https://www.youtube.com/embed/${videoKey}?autoplay=1&rel=0`}
                 className="absolute inset-0 w-full h-full"
                 allow="autoplay; encrypted-media"
                 allowFullScreen
+                title={title ? `${title} Trailer` : "Trailer"}
               />
             </div>
           </div>

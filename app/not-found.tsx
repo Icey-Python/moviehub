@@ -7,22 +7,25 @@ export default function NotFound() {
     <>
       <Navbar />
       <main className="min-h-[80vh] flex flex-col items-center justify-center px-6 text-center">
-        <h1 className="text-9xl font-bold text-accent">404</h1>
-        <p className="text-2xl font-semibold mt-4">Page Not Found</p>
-        <p className="text-zinc-500 mt-2 max-w-md">
+        <div className="relative">
+          <h1 className="text-8xl sm:text-9xl font-extrabold text-accent">404</h1>
+          <div className="absolute inset-0 blur-3xl bg-accent/20 -z-10 rounded-full" />
+        </div>
+        <p className="text-xl sm:text-2xl font-semibold mt-4">Page Not Found</p>
+        <p className="text-foreground-secondary mt-2 max-w-md">
           The page you&apos;re looking for doesn&apos;t exist or has been moved.
         </p>
-        <div className="flex gap-4 mt-8">
+        <div className="flex gap-3 mt-8">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent text-white font-medium hover:bg-accent-hover transition-colors"
+            className="btn-primary rounded-xl"
           >
             <IconHome className="w-5 h-5" stroke={1.5} />
             Go Home
           </Link>
           <Link
             href="/#search"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl glass font-medium hover:bg-white/[0.08] transition-colors"
+            className="btn-secondary rounded-xl"
           >
             <IconSearch className="w-5 h-5" stroke={1.5} />
             Search

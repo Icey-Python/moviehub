@@ -46,9 +46,9 @@ export default async function AnimeDetailPage({
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-7xl px-6 sm:px-8 py-12">
+      <main className="page-container py-8 sm:py-10 md:py-12">
         {anime.bannerImage && (
-          <div className="relative w-full aspect-video max-h-[480px] overflow-hidden rounded-2xl border border-glass-border mb-10">
+          <div className="relative w-full aspect-video max-h-[480px] overflow-hidden rounded-2xl border border-border/50 mb-8 sm:mb-10">
             <Image
               src={anime.bannerImage}
               alt={title}
@@ -61,39 +61,39 @@ export default async function AnimeDetailPage({
           </div>
         )}
 
-        <div className="flex flex-col md:flex-row gap-10">
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-10">
           <div className="shrink-0">
-            <div className="relative w-52 md:w-64 aspect-[2/3] rounded-xl overflow-hidden border border-glass-border mx-auto md:mx-0">
+            <div className="relative w-44 sm:w-52 md:w-60 aspect-[2/3] rounded-xl overflow-hidden border border-border/50 mx-auto md:mx-0 bg-background-elevated">
               <Image
                 src={anime.coverImage.large || "https://placehold.co/384x576/0a0a0a/71717a?text=No+Image"}
                 alt={title}
                 fill
-                sizes="(max-width: 768px) 208px, 256px"
+                sizes="(max-width: 768px) 176px, 240px"
                 className="object-cover"
               />
             </div>
           </div>
 
           <div className="flex-1 min-w-0">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
               {title}
             </h1>
             {anime.title.native && (
-              <p className="text-muted-foreground mt-2">{anime.title.native}</p>
+              <p className="text-foreground-secondary mt-2">{anime.title.native}</p>
             )}
 
-            <div className="flex flex-wrap items-center gap-4 mt-5 text-sm">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-5 text-sm">
               <span className="flex items-center gap-1.5">
                 <IconStar className="w-4 h-4 text-amber-400" fill="currentColor" stroke={1.5} />
                 <span className="font-semibold">{score}</span>
                 <span className="text-muted-foreground">({anime.popularity?.toLocaleString()} users)</span>
               </span>
-              <span className="text-muted-foreground/50">|</span>
-              <span className="text-zinc-400">{format}</span>
+              <span className="text-border/50">|</span>
+              <span className="text-foreground-secondary">{format}</span>
               {anime.episodes && (
                 <>
-                  <span className="text-muted-foreground/50">|</span>
-                  <span className="flex items-center gap-1.5 text-zinc-400">
+                  <span className="text-border/50">|</span>
+                  <span className="flex items-center gap-1.5 text-foreground-secondary">
                     <IconCalendar className="w-4 h-4" stroke={1.5} />
                     {anime.episodes} episodes
                   </span>
@@ -101,8 +101,8 @@ export default async function AnimeDetailPage({
               )}
               {duration && (
                 <>
-                  <span className="text-muted-foreground/50">|</span>
-                  <span className="flex items-center gap-1.5 text-zinc-400">
+                  <span className="text-border/50">|</span>
+                  <span className="flex items-center gap-1.5 text-foreground-secondary">
                     <IconClock className="w-4 h-4" stroke={1.5} />
                     {duration}
                   </span>
@@ -110,19 +110,19 @@ export default async function AnimeDetailPage({
               )}
               {season && (
                 <>
-                  <span className="text-muted-foreground/50">|</span>
-                  <span className="text-zinc-400">{season}</span>
+                  <span className="text-border/50">|</span>
+                  <span className="text-foreground-secondary">{season}</span>
                 </>
               )}
-              <span className="text-muted-foreground/50">|</span>
-              <span className="text-zinc-400">{status}</span>
+              <span className="text-border/50">|</span>
+              <span className="text-foreground-secondary">{status}</span>
             </div>
 
-            <div className="flex flex-wrap gap-2.5 mt-5">
+            <div className="flex flex-wrap gap-2 mt-5">
               {anime.genres.map((g) => (
                 <span
                   key={g}
-                  className="px-3.5 py-1.5 rounded-full text-xs font-medium glass"
+                  className="h-8 px-3 rounded-lg text-xs font-medium glass flex items-center"
                 >
                   {g}
                 </span>
@@ -130,25 +130,24 @@ export default async function AnimeDetailPage({
             </div>
 
             {studios.length > 0 && (
-              <p className="text-sm text-muted-foreground mt-4">
+              <p className="text-sm text-foreground-secondary mt-4">
                 Studio: {studios.map((s) => s.name).join(", ")}
               </p>
             )}
 
-            <div className="mt-8 flex gap-4">
-              <Link
-                href={`/anime/${anime.id}/watch`}
-                className="inline-flex items-center gap-2.5 h-12 px-7 rounded-xl bg-accent text-white font-medium text-sm hover:bg-accent-hover transition-colors"
-              >
-                <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
-                Watch Now
+            <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
+              <Link href={`/anime/${anime.id}/watch`}>
+                <button className="btn-primary rounded-xl">
+                  <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
+                  Watch Now
+                </button>
               </Link>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6 sm:mt-8">
               <h2 className="text-lg font-semibold mb-3">Synopsis</h2>
               <div
-                className="text-zinc-400 leading-relaxed"
+                className="text-foreground-secondary leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: anime.description || "No synopsis available." }}
               />
             </div>
@@ -165,12 +164,12 @@ export default async function AnimeDetailPage({
         )}
 
         {topCharacters.length > 0 && (
-          <section className="mt-14">
-            <h2 className="text-xl font-bold mb-6">Characters</h2>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6">
+          <section className="mt-12 sm:mt-14">
+            <h2 className="section-heading">Characters</h2>
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 sm:gap-6">
               {topCharacters.map(({ node, role }) => (
                 <div key={node.id} className="text-center">
-                  <div className="relative w-full aspect-square rounded-full overflow-hidden border border-glass-border bg-muted mx-auto">
+                  <div className="relative w-full aspect-square rounded-full overflow-hidden border border-border/50 bg-background-elevated mx-auto">
                     <Image
                       src={
                         node.image?.large ||
@@ -183,8 +182,8 @@ export default async function AnimeDetailPage({
                       className="object-cover"
                     />
                   </div>
-                  <p className="mt-3 text-xs font-medium truncate">{node.name.full}</p>
-                  <p className="text-[10px] text-muted-foreground truncate mt-0.5">
+                  <p className="mt-3 text-xs sm:text-sm font-medium truncate">{node.name.full}</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground truncate mt-0.5">
                     {role}
                   </p>
                 </div>
@@ -194,25 +193,25 @@ export default async function AnimeDetailPage({
         )}
 
         {recommendations.length > 0 && (
-          <section className="mt-14">
-            <h2 className="text-xl font-bold mb-6">Recommendations</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+          <section className="mt-12 sm:mt-14">
+            <h2 className="section-heading">Recommendations</h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
               {recommendations.map(({ node }) => (
                 <Link
                   key={node.mediaRecommendation.id}
                   href={`/anime/${node.mediaRecommendation.id}`}
                   className="group block"
                 >
-                  <div className="relative aspect-[2/3] rounded-xl overflow-hidden glass-subtle transition-colors duration-200 group-hover:border-white/[0.05]">
+                  <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-background-elevated border border-border/50 transition-all duration-300 group-hover:border-accent/30">
                     <Image
                       src={node.mediaRecommendation.coverImage.large || "https://placehold.co/384x576/0a0a0a/71717a?text=No+Image"}
                       alt={node.mediaRecommendation.title.english || node.mediaRecommendation.title.romaji}
                       fill
                       sizes="185px"
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                   </div>
-                  <p className="mt-3 text-xs font-medium truncate px-0.5">
+                  <p className="mt-2 text-xs sm:text-sm font-medium truncate px-0.5 group-hover:text-accent transition-colors">
                     {node.mediaRecommendation.title.english || node.mediaRecommendation.title.romaji}
                   </p>
                 </Link>

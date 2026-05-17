@@ -66,28 +66,28 @@ export default async function PersonPage({
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-7xl px-6 sm:px-8 py-12">
-        <div className="flex flex-col md:flex-row gap-10">
+      <main className="page-container py-8 sm:py-10 md:py-12">
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-10">
           <div className="shrink-0">
-            <div className="relative w-52 md:w-64 aspect-[2/3] rounded-xl overflow-hidden border border-glass-border mx-auto md:mx-0">
+            <div className="relative w-44 sm:w-52 md:w-60 aspect-[2/3] rounded-xl overflow-hidden border border-border/50 mx-auto md:mx-0 bg-background-elevated">
               <Image
                 src={posterUrl(person.profile_path, "w500")}
                 alt={person.name}
                 fill
-                sizes="(max-width: 768px) 208px, 256px"
+                sizes="(max-width: 768px) 176px, 240px"
                 className="object-cover"
               />
             </div>
           </div>
 
           <div className="flex-1 min-w-0">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
               {person.name}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-4 mt-5 text-sm">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-5 text-sm">
               {person.birthday && (
-                <span className="flex items-center gap-1.5 text-zinc-400">
+                <span className="flex items-center gap-1.5 text-foreground-secondary">
                   <IconCake className="w-4 h-4" stroke={1.5} />
                   {formatDate(person.birthday)}
                   {age !== null && (
@@ -99,25 +99,25 @@ export default async function PersonPage({
               )}
               {person.deathday && (
                 <>
-                  <span className="text-muted-foreground/50">|</span>
-                  <span className="text-zinc-400">
+                  <span className="text-border/50">|</span>
+                  <span className="text-foreground-secondary">
                     Died {formatDate(person.deathday)}
                   </span>
                 </>
               )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-3 text-sm">
               {person.place_of_birth && (
-                <span className="flex items-center gap-1.5 text-zinc-400">
+                <span className="flex items-center gap-1.5 text-foreground-secondary">
                   <IconMapPin className="w-4 h-4" stroke={1.5} />
                   {person.place_of_birth}
                 </span>
               )}
               {person.known_for_department && (
                 <>
-                  {person.place_of_birth && <span className="text-muted-foreground/50">|</span>}
-                  <span className="flex items-center gap-1.5 text-zinc-400">
+                  {person.place_of_birth && <span className="text-border/50">|</span>}
+                  <span className="flex items-center gap-1.5 text-foreground-secondary">
                     <IconBriefcase className="w-4 h-4" stroke={1.5} />
                     {person.known_for_department}
                   </span>
@@ -126,9 +126,9 @@ export default async function PersonPage({
             </div>
 
             {person.biography && (
-              <div className="mt-8">
+              <div className="mt-6 sm:mt-8">
                 <h2 className="text-lg font-semibold mb-3">Biography</h2>
-                <p className="text-zinc-400 leading-relaxed whitespace-pre-line">
+                <p className="text-foreground-secondary leading-relaxed whitespace-pre-line">
                   {person.biography}
                 </p>
               </div>
@@ -137,9 +137,9 @@ export default async function PersonPage({
         </div>
 
         {movieCredits.length > 0 && (
-          <section className="mt-14">
-            <h2 className="text-xl font-bold mb-6">Movies ({movieCredits.length})</h2>
-            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
+          <section className="mt-12 sm:mt-14">
+            <h2 className="section-heading">Movies ({movieCredits.length})</h2>
+            <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
               {movieCredits.map((credit) => (
                 <MovieCard
                   key={`movie-${credit.id}`}
@@ -164,9 +164,9 @@ export default async function PersonPage({
         )}
 
         {tvCredits.length > 0 && (
-          <section className="mt-14">
-            <h2 className="text-xl font-bold mb-6">TV Shows ({tvCredits.length})</h2>
-            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
+          <section className="mt-12 sm:mt-14">
+            <h2 className="section-heading">TV Shows ({tvCredits.length})</h2>
+            <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
               {tvCredits.map((credit) => (
                 <MovieCard
                   key={`tv-${credit.id}`}
