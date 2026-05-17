@@ -72,36 +72,40 @@ export default function AnimePlayer({ animeId, animeTitle, episodes, episode, an
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col z-50">
-      <div className="flex items-center justify-between h-14 px-6 bg-black/80 backdrop-blur-xl border-b border-glass-border shrink-0">
+      <div className="flex items-center justify-between h-14 px-3 sm:px-6 bg-background-elevated/90 backdrop-blur-xl border-b border-border/50 shrink-0">
         <Link
           href={`/anime/${animeId}`}
-          className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors"
+          className="flex items-center gap-2 text-sm text-foreground-secondary hover:text-white transition-colors"
+          aria-label="Go back"
         >
-          <IconArrowLeft className="w-4 h-4" stroke={2} />
-          Back
+          <IconArrowLeft className="w-5 h-5" stroke={2} />
+          <span className="hidden sm:inline">Back</span>
         </Link>
-        <span className="text-xs text-zinc-500 hidden sm:inline truncate max-w-[240px]">
+        <span className="text-xs text-muted-foreground hidden sm:inline truncate max-w-[240px]">
           {animeTitle} — Ep {episode}
         </span>
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <a
               href={`/anime/${animeId}/watch?ep=${Math.max(1, episode - 1)}`}
-              className={`p-1.5 rounded-lg glass text-zinc-400 hover:text-white transition-colors ${episode <= 1 ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
+              className={`carousel-dot w-9 h-9 rounded-lg glass text-foreground-secondary hover:text-white transition-colors ${episode <= 1 ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
+              aria-label="Previous episode"
             >
               <IconPlayerSkipBack className="w-4 h-4" stroke={2} />
             </a>
-            <span className="text-xs text-zinc-500 w-14 text-center font-medium">Ep {episode}</span>
+            <span className="text-xs text-muted-foreground w-14 text-center font-medium">Ep {episode}</span>
             <a
               href={`/anime/${animeId}/watch?ep=${Math.min(episodes, episode + 1)}`}
-              className={`p-1.5 rounded-lg glass text-zinc-400 hover:text-white transition-colors ${episode >= episodes ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
+              className={`carousel-dot w-9 h-9 rounded-lg glass text-foreground-secondary hover:text-white transition-colors ${episode >= episodes ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
+              aria-label="Next episode"
             >
               <IconPlayerSkipForward className="w-4 h-4" stroke={2} />
             </a>
           </div>
           <button
             onClick={handleProviderChange}
-            className="px-3 py-1.5 text-xs font-medium rounded-lg glass text-zinc-400 hover:text-white transition-colors"
+            className="carousel-dot h-9 px-3 text-xs font-medium rounded-lg glass text-foreground-secondary hover:text-white transition-colors"
+            aria-label="Switch provider"
           >
             {currentProvider.name}
           </button>
@@ -113,6 +117,7 @@ export default function AnimePlayer({ animeId, animeTitle, episodes, episode, an
           src={embedUrl}
           className="w-full h-full"
           allowFullScreen
+          title="Anime player"
         />
       </div>
     </div>

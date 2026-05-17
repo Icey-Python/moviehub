@@ -27,27 +27,27 @@ export default async function CastPage({
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-7xl px-6 sm:px-8 py-12">
+      <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 lg:py-12">
         <Link
           href={`/movie/${movieId}`}
-          className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors mb-8"
+          className="h-8 xs:h-9 sm:h-10 inline-flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm text-foreground-secondary hover:text-white transition-colors mb-4 xs:mb-5 sm:mb-6 md:mb-8"
         >
-          <IconArrowLeft className="w-4 h-4" stroke={2} />
+          <IconArrowLeft className="w-3.5 h-3.5 xs:w-4 xs:h-4" stroke={2} />
           Back to {movie.title}
         </Link>
 
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">{movie.title}</h1>
-        <p className="text-muted-foreground mb-10">Full Cast & Crew</p>
+        <h1 className="text-xl xs:text-2xl md:text-3xl font-extrabold mb-1 xs:mb-1.5 sm:mb-2">{movie.title}</h1>
+        <p className="text-foreground-secondary mb-6 xs:mb-8 sm:mb-10">Full Cast & Crew</p>
 
         {credits.cast.length > 0 && (
           <section>
-            <h2 className="text-lg font-semibold mb-6">Cast ({credits.cast.length})</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <h2 className="text-base xs:text-lg font-semibold mb-4 xs:mb-5 sm:mb-6">Cast ({credits.cast.length})</h2>
+            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 xs:gap-4 sm:gap-5">
               {credits.cast.map((member) => (
                 <Link
                   key={member.id}
                   href={`/person/${member.id}`}
-                  className="glass-subtle rounded-xl overflow-hidden group"
+                  className="bento-card overflow-hidden group"
                 >
                   <div className="relative w-full aspect-[3/4]">
                     <Image
@@ -59,7 +59,7 @@ export default async function CastPage({
                       alt={member.name}
                       fill
                       sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
-                      className="object-cover group-hover:scale-105 transition-transform"
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
                   <div className="p-3">

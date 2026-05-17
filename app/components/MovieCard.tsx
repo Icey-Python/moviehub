@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Movie, TVShow, AnilistAnime } from "@/app/lib/types";
 import { posterUrl } from "@/app/lib/tmdb";
-import { IconStar } from "@tabler/icons-react";
+import { IconStar, IconArrowRight } from "@tabler/icons-react";
 
 type MediaItem = Movie | TVShow | AnilistAnime;
 
@@ -40,28 +40,35 @@ export default function MovieCard({ movie, isTV = false, isAnime = false }: { mo
   return (
     <Link
       href={href}
-      className="group block shrink-0 w-[calc(50%-1rem)] sm:w-[calc(33.333%-1rem)] md:w-[140px] lg:w-[160px] snap-start"
+      className="group block shrink-0 w-[calc(50%-0.375rem)] xs:w-[calc(33.333%-0.5rem)] sm:w-[calc(25%-0.75rem)] md:w-[140px] lg:w-[160px] xl:w-[180px] snap-start"
+      aria-label={`${title} (${year})`}
     >
-      <div className="relative aspect-[2/3] rounded-md sm:rounded-lg overflow-hidden glass-subtle transition-colors duration-200 group-hover:border-white/[0.05]">
+      <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-background-elevated border border-border/50 transition-all duration-300 group-hover:border-accent/30 group-hover:shadow-lg group-hover:shadow-accent/10">
         <Image
           src={imageSrc}
           alt={title}
           fill
-          sizes="90px sm:130px md:150px lg:170px xl:190px"
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          sizes="90px sm:140px md:160px lg:180px xl:200px"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         {rating !== "N/A" && (
-          <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 bg-black/70 backdrop-blur-sm rounded px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold text-white flex items-center gap-0.5">
-            <IconStar className="w-2 h-2 sm:w-2.5 sm:h-2.5 text-amber-400" fill="currentColor" stroke={1.5} />
+          <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1 text-[10px] font-semibold text-white flex items-center gap-1">
+            <IconStar className="w-3 h-3 text-amber-400" fill="currentColor" stroke={1.5} />
             {rating}
           </div>
         )}
+        <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+          <div className="w-8 h-8 rounded-full bg-accent flex items-center justify-center">
+            <IconArrowRight className="w-4 h-4 text-white" stroke={2} />
+          </div>
+        </div>
       </div>
-      <div className="mt-1.5 sm:mt-2 px-0.5">
-        <h3 className="font-semibold text-[10px] sm:text-xs truncate text-card-foreground">
+      <div className="mt-2 px-0.5">
+        <h3 className="font-semibold text-xs sm:text-sm truncate text-card-foreground group-hover:text-accent transition-colors">
           {title}
         </h3>
-        <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0.5">{year}</p>
+        <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">{year}</p>
       </div>
     </Link>
   );

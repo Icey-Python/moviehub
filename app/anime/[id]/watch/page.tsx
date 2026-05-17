@@ -25,15 +25,15 @@ export default async function WatchPage({
   if (!anime || !anime.episodes) {
     return (
       <div className="fixed inset-0 bg-black flex flex-col z-50">
-        <div className="flex items-center justify-between h-14 px-6 bg-black/80 backdrop-blur-xl border-b border-glass-border shrink-0">
+        <div className="flex items-center justify-between h-14 px-6 bg-background-elevated/80 backdrop-blur-xl border-b border-border/50 shrink-0">
           <a
             href={`/anime/${animeId}`}
-            className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-sm text-foreground-secondary hover:text-white transition-colors"
           >
-            <IconArrowLeft className="w-4 h-4" stroke={2} />
+            <IconArrowLeft className="w-5 h-5" stroke={2} />
             Back
           </a>
-          <span className="text-xs text-zinc-500">{anime?.title.english || anime?.title.romaji}</span>
+          <span className="text-xs text-muted-foreground">{anime?.title.english || anime?.title.romaji}</span>
           <div className="w-16" />
         </div>
         <div className="flex-1 flex items-center justify-center bg-black">

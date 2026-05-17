@@ -29,31 +29,31 @@ export default function AnimeEpisodes({
   if (episodes <= 1) return null;
 
   return (
-    <section className="mt-14">
-      <h2 className="text-xl font-bold mb-6">Episodes</h2>
+    <section className="mt-8 xs:mt-10 sm:mt-12 md:mt-14">
+      <h2 className="section-heading">Episodes</h2>
 
-      <div className="grid gap-4">
+      <div className="grid gap-2 xs:gap-2.5 sm:gap-3">
         {pageEpisodes.map((ep) => (
           <Link
             key={ep}
             href={`/anime/${animeId}/watch?ep=${ep}`}
-            className={`flex gap-4 glass-subtle rounded-xl overflow-hidden hover:bg-white/[0.04] transition-colors ${
+            className={`flex gap-2 xs:gap-3 sm:gap-4 glass-subtle rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.04] transition-all duration-200 group ${
               ep === currentEpisode ? "ring-1 ring-accent" : ""
             }`}
           >
-            <div className="shrink-0 w-40 md:w-56 aspect-video bg-zinc-900 flex items-center justify-center relative">
-              <span className={`text-2xl font-bold ${ep === currentEpisode ? "text-accent" : "text-zinc-600"}`}>{ep}</span>
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 transition-opacity">
-                <IconPlayerPlay className="w-8 h-8 text-white" fill="currentColor" stroke={1.5} />
+            <div className="shrink-0 w-28 xs:w-32 sm:w-40 md:w-48 lg:w-56 aspect-video bg-background-elevated flex items-center justify-center relative">
+              <span className={`text-xl xs:text-2xl sm:text-3xl font-bold ${ep === currentEpisode ? "text-accent" : "text-zinc-600"}`}>{ep}</span>
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                <IconPlayerPlay className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 text-white" fill="currentColor" stroke={1.5} />
               </div>
             </div>
 
-            <div className="flex-1 min-w-0 py-3 pr-4">
-              <p className="text-xs text-muted-foreground mb-1">
+            <div className="flex-1 min-w-0 py-2 xs:py-2.5 sm:py-3 pr-2 xs:pr-3 sm:pr-4">
+              <p className="text-[9px] xs:text-[10px] sm:text-xs text-muted-foreground mb-0.5 xs:mb-1">
                 Episode {ep}
-                {ep === currentEpisode && <span className="ml-2 text-accent">• Watching</span>}
+                {ep === currentEpisode && <span className="ml-1 xs:ml-1.5 sm:ml-2 text-accent">• Watching</span>}
               </p>
-              <h3 className="font-semibold text-sm md:text-base truncate">
+              <h3 className="font-semibold text-xs xs:text-sm sm:text-base truncate">
                 {animeTitle}
               </h3>
             </div>
@@ -62,23 +62,25 @@ export default function AnimeEpisodes({
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-3 mt-6">
+        <div className="flex items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 mt-4 xs:mt-5 sm:mt-6">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="p-2 rounded-lg glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="carousel-dot w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            aria-label="Previous page"
           >
-            <IconChevronLeft className="w-4 h-4" stroke={2} />
+            <IconChevronLeft className="w-4 h-4 xs:w-5 xs:h-5" stroke={2} />
           </button>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-xs xs:text-sm text-muted-foreground">
             {page} / {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="p-2 rounded-lg glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="carousel-dot w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            aria-label="Next page"
           >
-            <IconChevronRight className="w-4 h-4" stroke={2} />
+            <IconChevronRight className="w-4 h-4 xs:w-5 xs:h-5" stroke={2} />
           </button>
         </div>
       )}

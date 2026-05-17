@@ -7,7 +7,6 @@ import {
   IconPlayerSkipBack,
   IconPlayerSkipForward,
   IconChevronDown,
-  IconPlayerPlay,
 } from "@tabler/icons-react";
 
 type Source = "vidsrc" | "vidking";
@@ -102,7 +101,7 @@ export default function Player({
           })();
 
     return { prev: prevEp, next: nextEp };
-  }, [type, season, episode, seasons, currentSeason, currentEpisode, totalEpisodes, watchBase]);
+  }, [type, currentSeason, currentEpisode, seasons, totalEpisodes, watchBase]);
 
   const episodeTitle = type === "tv" 
     ? `S${currentSeason}E${currentEpisode}` 
@@ -110,7 +109,6 @@ export default function Player({
       ? `Episode ${currentEpisode}` 
       : undefined;
 
-  // Save initial watch entry
   useEffect(() => {
     saveWatch({
       id: movieId,
@@ -153,7 +151,7 @@ export default function Player({
 
   return (
     <div className="fixed inset-0 bg-black flex flex-col z-50">
-      <div className="flex items-center justify-between h-14 px-4 sm:px-6 bg-black/80 backdrop-blur-xl border-b border-glass-border shrink-0">
+      <div className="flex items-center justify-between h-12 xs:h-14 px-3 xs:px-4 sm:px-6 bg-background-elevated/90 backdrop-blur-xl border-b border-border/50 shrink-0">
         <Link
           href={
             type === "anime"
@@ -162,55 +160,59 @@ export default function Player({
               ? `/series/${movieId}`
               : `/movie/${movieId}`
           }
-          className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition-colors"
+          className="flex items-center gap-1.5 xs:gap-2 text-xs xs:text-sm text-foreground-secondary hover:text-white transition-colors"
+          aria-label="Go back"
         >
-          <IconArrowLeft className="w-4 h-4" stroke={2} />
-          <span className="hidden sm:inline">Back</span>
+          <IconArrowLeft className="w-4 h-4 xs:w-5 xs:h-5" stroke={2} />
+          <span className="hidden xs:inline">Back</span>
         </Link>
 
-        <span className="text-xs text-zinc-500 truncate max-w-[180px] sm:max-w-[300px]">
+        <span className="text-[10px] xs:text-xs text-muted-foreground truncate max-w-[120px] xs:max-w-[160px] sm:max-w-[300px]">
           {movieTitle}
           {type === "tv" && season && episode && (
             <span className="text-zinc-600"> · S{season}E{episode}</span>
           )}
         </span>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 xs:gap-1.5 sm:gap-2">
           {type === "tv" && episodeLinks && (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5 xs:gap-1">
               <Link
                 href={episodeLinks.prev ?? "#"}
-                className={`p-1.5 rounded-lg glass text-zinc-400 hover:text-white transition-colors ${
+                className={`carousel-dot w-7 h-7 xs:w-8 xs:h-8 sm:w-9 sm:h-9 rounded-lg glass text-foreground-secondary hover:text-white transition-colors ${
                   !episodeLinks.prev ? "opacity-30 pointer-events-none" : ""
                 }`}
+                aria-label="Previous episode"
               >
-                <IconPlayerSkipBack className="w-4 h-4" stroke={2} />
+                <IconPlayerSkipBack className="w-3.5 h-3.5 xs:w-4 xs:h-4" stroke={2} />
               </Link>
 
               <div className="relative">
                 <button
                   onClick={() => setPickerOpen(!pickerOpen)}
-                  className="flex items-center gap-1 px-2 py-1 rounded-lg glass text-xs text-zinc-400 hover:text-white"
+                  className="carousel-dot flex items-center gap-0.5 xs:gap-1 h-7 xs:h-8 sm:h-9 px-1.5 xs:px-2 rounded-lg glass text-[10px] xs:text-xs text-foreground-secondary hover:text-white"
+                  aria-label="Episode picker"
+                  aria-expanded={pickerOpen}
                 >
                   S{currentSeason}E{currentEpisode}
-                  <IconChevronDown className={`w-3 h-3 ${pickerOpen ? "rotate-180" : ""}`} stroke={2} />
+                  <IconChevronDown className={`w-2.5 h-2.5 xs:w-3 xs:h-3 transition-transform ${pickerOpen ? "rotate-180" : ""}`} stroke={2} />
                 </button>
 
                 {pickerOpen && (
-                  <div className="absolute right-0 top-full mt-1 w-64 max-h-72 overflow-y-auto glass rounded-lg p-2 z-50">
+                  <div className="absolute right-0 top-full mt-2 w-56 xs:w-64 max-h-60 xs:max-h-72 overflow-y-auto glass rounded-xl p-2 xs:p-3 z-50 border border-border/50">
                     {seasons.map((s) => (
-                      <div key={s.season_number} className="mb-2">
-                        <p className="text-xs font-semibold text-zinc-500 px-2 mb-1">{s.name}</p>
-                        <div className="grid grid-cols-6 gap-1">
+                      <div key={s.season_number} className="mb-2 xs:mb-3 last:mb-0">
+                        <p className="text-[10px] xs:text-xs font-semibold text-muted-foreground px-1.5 xs:px-2 mb-1.5 xs:mb-2">{s.name}</p>
+                        <div className="grid grid-cols-6 gap-1 xs:gap-1.5">
                           {Array.from({ length: s.episode_count }, (_, i) => i + 1).map((ep) => (
                             <Link
                               key={ep}
                               href={`${watchBase}?season=${s.season_number}&ep=${ep}`}
                               onClick={() => setPickerOpen(false)}
-                              className={`text-center text-xs py-1 rounded ${
+                              className={`carousel-dot h-7 xs:h-8 text-center text-[10px] xs:text-xs rounded-lg transition-colors ${
                                 s.season_number === currentSeason && ep === currentEpisode
                                   ? "bg-accent text-white"
-                                  : "text-zinc-400 hover:bg-white/10"
+                                  : "text-foreground-secondary hover:bg-white/10"
                               }`}
                             >
                               {ep}
@@ -225,23 +227,25 @@ export default function Player({
 
               <Link
                 href={episodeLinks.next ?? "#"}
-                className={`p-1.5 rounded-lg glass text-zinc-400 hover:text-white transition-colors ${
+                className={`carousel-dot w-7 h-7 xs:w-8 xs:h-8 sm:w-9 sm:h-9 rounded-lg glass text-foreground-secondary hover:text-white transition-colors ${
                   !episodeLinks.next ? "opacity-30 pointer-events-none" : ""
                 }`}
+                aria-label="Next episode"
               >
-                <IconPlayerSkipForward className="w-4 h-4" stroke={2} />
+                <IconPlayerSkipForward className="w-3.5 h-3.5 xs:w-4 xs:h-4" stroke={2} />
               </Link>
             </div>
           )}
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5 xs:gap-1">
             {sources.map((s) => (
               <button
                 key={s.id}
                 onClick={() => setSource(s.id)}
-                className={`px-2 sm:px-3 py-1 rounded-md text-xs font-medium transition-colors ${
-                  source === s.id ? "bg-accent text-white" : "glass text-zinc-400 hover:text-white"
+                className={`carousel-dot h-7 xs:h-8 sm:h-9 px-2 xs:px-3 rounded-lg text-[10px] xs:text-xs font-medium transition-colors ${
+                  source === s.id ? "bg-accent text-white" : "glass text-foreground-secondary hover:text-white"
                 }`}
+                aria-label={`Switch to ${s.label}`}
               >
                 {s.label}
               </button>
@@ -250,7 +254,7 @@ export default function Player({
         </div>
       </div>
 
-      <iframe src={embedUrl} className="flex-1 w-full h-full" key={`${source}-${currentSeason}-${currentEpisode}`} allowFullScreen />
+      <iframe src={embedUrl} className="flex-1 w-full h-full" key={`${source}-${currentSeason}-${currentEpisode}`} allowFullScreen title="Video player" />
     </div>
   );
 }

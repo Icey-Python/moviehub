@@ -35,105 +35,102 @@ export default function SeasonTabs({
   );
 
   return (
-    <section className="mt-14">
-      <h2 className="text-xl font-bold mb-6">Episodes</h2>
+    <section className="mt-8 xs:mt-10 sm:mt-12 md:mt-14">
+      <h2 className="section-heading">Episodes</h2>
 
-      {/* Season Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-8">
+      <div className="flex gap-1.5 xs:gap-2 overflow-x-auto pb-2 scrollbar-hide mb-4 xs:mb-5 sm:mb-6" role="tablist" aria-label="Seasons">
         {seasons.map((season) => (
           <Link
             key={season.season_number}
             href={`/series/${tvId}?season=${season.season_number}`}
             scroll={false}
-            className={`shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            role="tab"
+            aria-selected={season.season_number === activeSeason}
+            className={`shrink-0 h-8 xs:h-9 sm:h-10 px-3 xs:px-4 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ${
               season.season_number === activeSeason
                 ? "bg-accent text-white"
                 : "glass hover:bg-white/10"
             }`}
           >
             {season.name}
-            <span className="ml-2 text-xs opacity-60">
+            <span className="ml-1 xs:ml-1.5 sm:ml-2 text-[10px] xs:text-xs opacity-60">
               ({season.episode_count})
             </span>
           </Link>
         ))}
       </div>
 
-      {/* Episode Grid */}
-      <div className="grid gap-4">
+      <div className="grid gap-2 xs:gap-2.5 sm:gap-3">
         {paginatedEpisodes.map((episode) => (
-          <div
+          <Link
             key={episode.id}
-            className="flex gap-4 glass-subtle rounded-xl overflow-hidden hover:bg-white/[0.04] transition-colors"
+            href={`/series/${tvId}/watch?season=${episode.season_number}&ep=${episode.episode_number}`}
+            className="flex gap-2 xs:gap-3 sm:gap-4 glass-subtle rounded-lg sm:rounded-xl overflow-hidden hover:bg-white/[0.04] transition-all duration-200 group"
           >
-            {/* Episode Still */}
-            <Link
-              href={`/series/${tvId}/watch?season=${episode.season_number}&ep=${episode.episode_number}`}
-              className="relative shrink-0 w-40 md:w-56 aspect-video"
-            >
+            <div className="relative shrink-0 w-28 xs:w-32 sm:w-40 md:w-48 lg:w-56 aspect-video bg-background-elevated">
               <Image
                 src={stillUrl(episode.still_path)}
                 alt={episode.name}
                 fill
-                sizes="(max-width: 768px) 160px, 224px"
+                sizes="(max-width: 480px) 112px, (max-width: 640px) 128px, (max-width: 768px) 160px, 224px"
                 className="object-cover"
               />
-              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 transition-opacity">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
                 <IconPlayerPlay
-                  className="w-8 h-8 text-white"
+                  className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 text-white"
                   fill="currentColor"
                   stroke={1.5}
                 />
               </div>
-            </Link>
+            </div>
 
-            {/* Episode Info */}
-            <div className="flex-1 min-w-0 py-3 pr-4">
+            <div className="flex-1 min-w-0 py-2 xs:py-2.5 sm:py-3 pr-2 xs:pr-3 sm:pr-4">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="text-xs text-muted-foreground mb-1">
+                  <p className="text-[9px] xs:text-[10px] sm:text-xs text-muted-foreground mb-0.5 xs:mb-1">
                     S{episode.season_number}E{episode.episode_number}
                     {episode.air_date && ` · ${episode.air_date}`}
                     {episode.runtime && ` · ${episode.runtime}m`}
                   </p>
-                  <h3 className="font-semibold text-sm md:text-base truncate">
+                  <h3 className="font-semibold text-xs xs:text-sm sm:text-base truncate">
                     {episode.name}
                   </h3>
                 </div>
                 {episode.vote_average > 0 && (
-                  <span className="shrink-0 flex items-center gap-1 text-xs text-amber-400">
-                    <IconStar className="w-3.5 h-3.5" fill="currentColor" stroke={1.5} />
+                  <span className="shrink-0 flex items-center gap-1 text-[10px] xs:text-xs text-amber-400">
+                    <IconStar className="w-3 h-3 xs:w-3.5 xs:h-3.5" fill="currentColor" stroke={1.5} />
                     {episode.vote_average.toFixed(1)}
                   </span>
                 )}
               </div>
-              <p className="text-xs text-muted-foreground mt-2 line-clamp-2 hidden md:block">
+              <p className="text-[10px] xs:text-xs text-muted-foreground mt-1 xs:mt-1.5 sm:mt-2 line-clamp-2 hidden md:block">
                 {episode.overview || "No description available."}
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-3 mt-6">
+        <div className="flex items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 mt-4 xs:mt-5 sm:mt-6">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="p-2 rounded-lg glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="carousel-dot w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            aria-label="Previous page"
           >
-            <IconChevronLeft className="w-4 h-4" stroke={2} />
+            <IconChevronLeft className="w-4 h-4 xs:w-5 xs:h-5" stroke={2} />
           </button>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-xs xs:text-sm text-muted-foreground">
             {page} / {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={page === totalPages}
-            className="p-2 rounded-lg glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            className="carousel-dot w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl glass hover:bg-white/10 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            aria-label="Next page"
           >
-            <IconChevronRight className="w-4 h-4" stroke={2} />
+            <IconChevronRight className="w-4 h-4 xs:w-5 xs:h-5" stroke={2} />
           </button>
         </div>
       )}

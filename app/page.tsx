@@ -32,13 +32,16 @@ export default async function HomePage({
     return (
       <>
         <Navbar />
-        <main className="mx-auto max-w-7xl px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8">
-          <MovieGrid movies={movies} title={`Movies for "${query}"`} />
+        <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 space-y-6 xs:space-y-8 sm:space-y-10">
+          <h1 className="text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight">
+            Results for <span className="text-gradient">&quot;{query}&quot;</span>
+          </h1>
+          <MovieGrid movies={movies} title={`Movies`} />
           {tvShows.length > 0 && (
-            <MovieGrid movies={tvShows} title={`TV Shows for "${query}"`} isTV />
+            <MovieGrid movies={tvShows} title={`TV Shows`} isTV />
           )}
           {anime.media.length > 0 && (
-            <MovieGrid movies={anime.media} title={`Anime for "${query}"`} isAnime />
+            <MovieGrid movies={anime.media} title={`Anime`} isAnime />
           )}
         </main>
       </>
@@ -65,7 +68,7 @@ export default async function HomePage({
   return (
     <>
       <Navbar />
-      <main className="mx-auto max-w-7xl px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8 md:space-y-10">
+      <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 space-y-6 xs:space-y-8 sm:space-y-10 md:space-y-12">
         {featured.length > 0 && <HeroCarousel movies={featured} logos={logos} />}
         <ContinueWatching />
         <MovieGrid movies={trending} title="Trending Movies" />
