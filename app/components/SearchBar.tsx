@@ -37,19 +37,19 @@ export default function SearchBar() {
   }, []);
 
   return (
-    <div className="relative w-full max-w-[140px] xs:max-w-[200px] sm:max-w-sm md:max-w-md">
-      <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" stroke={2} />
+    <div className="relative w-full max-w-[120px] xs:max-w-[180px] sm:max-w-xs md:max-w-md lg:max-w-lg">
+      <IconSearch className="absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground pointer-events-none" stroke={2} />
       <input
         ref={inputRef}
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search movies, shows, anime..."
-        className="w-full h-10 sm:h-11 rounded-xl border border-border bg-card/50 backdrop-blur-sm pl-10 pr-10 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all"
+        placeholder="Search..."
+        className="w-full h-9 sm:h-10 md:h-11 rounded-lg sm:rounded-xl border border-border bg-card/50 backdrop-blur-sm pl-9 sm:pl-10 pr-8 sm:pr-10 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 transition-all"
         aria-label="Search"
       />
-      <kbd className="absolute right-3 top-1/2 -translate-y-1/2 hidden md:inline-flex items-center gap-0.5 rounded-lg border border-border bg-card/50 px-2 py-1 text-[10px] font-mono text-muted-foreground">
-        <IconSlash className="w-3 h-3" stroke={2} />
+      <kbd className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 hidden lg:inline-flex items-center gap-0.5 rounded-lg border border-border bg-card/50 px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-mono text-muted-foreground">
+        <IconSlash className="w-2.5 h-2.5 sm:w-3 sm:h-3" stroke={2} />
       </kbd>
     </div>
   );

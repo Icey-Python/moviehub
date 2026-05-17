@@ -45,22 +45,22 @@ export default function MovieGrid({
       {title && (
         <div className="flex items-center justify-between mb-4">
           <h2 className="section-heading">{title}</h2>
-          <div className="flex items-center gap-1.5">
-            <button
-              onClick={() => scroll("left")}
-              className="w-10 h-10 rounded-xl glass flex items-center justify-center hover:bg-white/[0.08] transition-colors text-muted-foreground hover:text-foreground"
-              aria-label="Scroll left"
-            >
-              <IconChevronLeft className="w-5 h-5" stroke={2} />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="w-10 h-10 rounded-xl glass flex items-center justify-center hover:bg-white/[0.08] transition-colors text-muted-foreground hover:text-foreground"
-              aria-label="Scroll right"
-            >
-              <IconChevronRight className="w-5 h-5" stroke={2} />
-            </button>
-          </div>
+        <div className="flex items-center gap-1 xs:gap-1.5">
+          <button
+            onClick={() => scroll("left")}
+            className="carousel-dot w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl glass flex items-center justify-center hover:bg-white/[0.08] transition-colors text-muted-foreground hover:text-foreground"
+            aria-label="Scroll left"
+          >
+            <IconChevronLeft className="w-4 h-4 xs:w-5 xs:h-5" stroke={2} />
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className="carousel-dot w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl glass flex items-center justify-center hover:bg-white/[0.08] transition-colors text-muted-foreground hover:text-foreground"
+            aria-label="Scroll right"
+          >
+            <IconChevronRight className="w-4 h-4 xs:w-5 xs:h-5" stroke={2} />
+          </button>
+        </div>
         </div>
       )}
       <div

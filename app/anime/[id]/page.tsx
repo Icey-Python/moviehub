@@ -46,9 +46,9 @@ export default async function AnimeDetailPage({
   return (
     <>
       <Navbar />
-      <main className="page-container py-8 sm:py-10 md:py-12">
+      <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 lg:py-12">
         {anime.bannerImage && (
-          <div className="relative w-full aspect-video max-h-[480px] overflow-hidden rounded-2xl border border-border/50 mb-8 sm:mb-10">
+          <div className="relative w-full aspect-video max-h-[200px] xs:max-h-[280px] sm:max-h-[360px] md:max-h-[440px] overflow-hidden rounded-xl sm:rounded-2xl border border-border/50 mb-4 xs:mb-6 sm:mb-8 md:mb-10">
             <Image
               src={anime.bannerImage}
               alt={title}
@@ -61,9 +61,9 @@ export default async function AnimeDetailPage({
           </div>
         )}
 
-        <div className="flex flex-col md:flex-row gap-8 lg:gap-10">
-          <div className="shrink-0">
-            <div className="relative w-44 sm:w-52 md:w-60 aspect-[2/3] rounded-xl overflow-hidden border border-border/50 mx-auto md:mx-0 bg-background-elevated">
+        <div className="flex flex-col md:flex-row gap-4 xs:gap-6 sm:gap-8 lg:gap-10">
+          <div className="shrink-0 hidden sm:block">
+            <div className="relative w-32 xs:w-40 sm:w-48 md:w-56 lg:w-60 aspect-[2/3] rounded-lg sm:rounded-xl overflow-hidden border border-border/50 mx-auto md:mx-0 bg-background-elevated">
               <Image
                 src={anime.coverImage.large || "https://placehold.co/384x576/0a0a0a/71717a?text=No+Image"}
                 alt={title}
@@ -75,7 +75,7 @@ export default async function AnimeDetailPage({
           </div>
 
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+            <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
               {title}
             </h1>
             {anime.title.native && (

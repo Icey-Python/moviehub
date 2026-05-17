@@ -66,10 +66,10 @@ export default async function PersonPage({
   return (
     <>
       <Navbar />
-      <main className="page-container py-8 sm:py-10 md:py-12">
-        <div className="flex flex-col md:flex-row gap-8 lg:gap-10">
-          <div className="shrink-0">
-            <div className="relative w-44 sm:w-52 md:w-60 aspect-[2/3] rounded-xl overflow-hidden border border-border/50 mx-auto md:mx-0 bg-background-elevated">
+      <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 lg:py-12">
+        <div className="flex flex-col md:flex-row gap-4 xs:gap-6 sm:gap-8 lg:gap-10">
+          <div className="shrink-0 hidden sm:block">
+            <div className="relative w-32 xs:w-40 sm:w-48 md:w-56 lg:w-60 aspect-[2/3] rounded-lg sm:rounded-xl overflow-hidden border border-border/50 mx-auto md:mx-0 bg-background-elevated">
               <Image
                 src={posterUrl(person.profile_path, "w500")}
                 alt={person.name}
@@ -81,7 +81,7 @@ export default async function PersonPage({
           </div>
 
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+            <h1 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
               {person.name}
             </h1>
 
@@ -137,9 +137,9 @@ export default async function PersonPage({
         </div>
 
         {movieCredits.length > 0 && (
-          <section className="mt-12 sm:mt-14">
+          <section className="mt-8 xs:mt-10 sm:mt-12 md:mt-14">
             <h2 className="section-heading">Movies ({movieCredits.length})</h2>
-            <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
+            <div className="flex gap-2 xs:gap-3 sm:gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
               {movieCredits.map((credit) => (
                 <MovieCard
                   key={`movie-${credit.id}`}
@@ -164,9 +164,9 @@ export default async function PersonPage({
         )}
 
         {tvCredits.length > 0 && (
-          <section className="mt-12 sm:mt-14">
+          <section className="mt-8 xs:mt-10 sm:mt-12 md:mt-14">
             <h2 className="section-heading">TV Shows ({tvCredits.length})</h2>
-            <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
+            <div className="flex gap-2 xs:gap-3 sm:gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
               {tvCredits.map((credit) => (
                 <MovieCard
                   key={`tv-${credit.id}`}

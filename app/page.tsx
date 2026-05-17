@@ -32,8 +32,8 @@ export default async function HomePage({
     return (
       <>
         <Navbar />
-        <main className="page-container py-6 sm:py-8 md:py-10 space-y-8 sm:space-y-10">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+        <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 space-y-6 xs:space-y-8 sm:space-y-10">
+          <h1 className="text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight">
             Results for <span className="text-gradient">&quot;{query}&quot;</span>
           </h1>
           <MovieGrid movies={movies} title={`Movies`} />
@@ -68,7 +68,7 @@ export default async function HomePage({
   return (
     <>
       <Navbar />
-      <main className="page-container py-6 sm:py-8 md:py-10 space-y-8 sm:space-y-10 md:space-y-12">
+      <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 space-y-6 xs:space-y-8 sm:space-y-10 md:space-y-12">
         {featured.length > 0 && <HeroCarousel movies={featured} logos={logos} />}
         <ContinueWatching />
         <MovieGrid movies={trending} title="Trending Movies" />

@@ -40,7 +40,7 @@ export default function MovieCard({ movie, isTV = false, isAnime = false }: { mo
   return (
     <Link
       href={href}
-      className="group block shrink-0 w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.75rem)] md:w-[150px] lg:w-[170px] xl:w-[190px] snap-start"
+      className="group block shrink-0 w-[calc(50%-0.375rem)] xs:w-[calc(33.333%-0.5rem)] sm:w-[calc(25%-0.75rem)] md:w-[140px] lg:w-[160px] xl:w-[180px] snap-start"
       aria-label={`${title} (${year})`}
     >
       <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-background-elevated border border-border/50 transition-all duration-300 group-hover:border-accent/30 group-hover:shadow-lg group-hover:shadow-accent/10">

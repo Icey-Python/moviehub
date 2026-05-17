@@ -88,7 +88,7 @@ export default function AnimePlayer({ animeId, animeTitle, episodes, episode, an
           <div className="flex items-center gap-1">
             <a
               href={`/anime/${animeId}/watch?ep=${Math.max(1, episode - 1)}`}
-              className={`w-9 h-9 rounded-lg glass text-foreground-secondary hover:text-white transition-colors ${episode <= 1 ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
+              className={`carousel-dot w-9 h-9 rounded-lg glass text-foreground-secondary hover:text-white transition-colors ${episode <= 1 ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
               aria-label="Previous episode"
             >
               <IconPlayerSkipBack className="w-4 h-4" stroke={2} />
@@ -96,7 +96,7 @@ export default function AnimePlayer({ animeId, animeTitle, episodes, episode, an
             <span className="text-xs text-muted-foreground w-14 text-center font-medium">Ep {episode}</span>
             <a
               href={`/anime/${animeId}/watch?ep=${Math.min(episodes, episode + 1)}`}
-              className={`w-9 h-9 rounded-lg glass text-foreground-secondary hover:text-white transition-colors ${episode >= episodes ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
+              className={`carousel-dot w-9 h-9 rounded-lg glass text-foreground-secondary hover:text-white transition-colors ${episode >= episodes ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`}
               aria-label="Next episode"
             >
               <IconPlayerSkipForward className="w-4 h-4" stroke={2} />
@@ -104,7 +104,7 @@ export default function AnimePlayer({ animeId, animeTitle, episodes, episode, an
           </div>
           <button
             onClick={handleProviderChange}
-            className="h-9 px-3 text-xs font-medium rounded-lg glass text-foreground-secondary hover:text-white transition-colors"
+            className="carousel-dot h-9 px-3 text-xs font-medium rounded-lg glass text-foreground-secondary hover:text-white transition-colors"
             aria-label="Switch provider"
           >
             {currentProvider.name}
