@@ -1,6 +1,8 @@
 # MovieHub
 
 A modern streaming platform for movies, TV shows, and anime built with Next.js 16, Tailwind CSS, and TypeScript.
+<img width="1354" height="698" alt="image" src="https://github.com/user-attachments/assets/9a74bbc0-0dd9-428d-a9b7-6dd3d172bc2f" />
+
 
 ## Features
 
