@@ -7,8 +7,8 @@ A modern streaming platform for movies, TV shows, and anime built with Next.js 1
 ## Features
 
 - **Movies** - Browse trending, popular, and top-rated movies from TMDB
-- **TV Shows** - Stream TV series with episode support
-- **Anime** - Watch anime with Anilist integration and multiple language dubs (Sub, Dub, Hindi)
+- **TV Shows** - Stream TV series
+- **Anime** - Watch anime with multiple language dubs (Sub, Dub, Hindi)
 - **Search** - Search across all content types
 - **Streaming** - Embedded streaming players with multiple provider options
 
@@ -19,8 +19,7 @@ A modern streaming platform for movies, TV shows, and anime built with Next.js 1
 - **Styling**: Tailwind CSS v4
 - **APIs**:
   - [TMDB](https://www.themoviedb.org/) - Movies & TV shows
-  - [Anilist](https://anilist.co/) - Anime metadata
-  - [VidNest](https://vidnest.fun/) - Anime streaming embeds
+    and more
 
 ## Getting Started
 
@@ -63,11 +62,6 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
-
-- Uses Next.js 16 with Turbopack for fast development
-- Server-side rendering for optimal SEO and performance
-- Image optimization via next/image with remote patterns configured
-- Tailwind CSS v4 with CSS-based configuration
 
 ## License
 
