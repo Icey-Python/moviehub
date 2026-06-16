@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { Select } from "./ui/Select";
 import {
   IconArrowLeft,
   IconPlayerSkipBack,
@@ -9,9 +10,9 @@ import {
   IconChevronDown,
 } from "@tabler/icons-react";
 
-type Source = "vidsrc" | "vidking";
+  type Source = "vidsrc" | "vidking" | "vidstream" | "2embed" | "multiembed" | "embedsu";
 
-interface SeasonInfo {
+  interface SeasonInfo {
   season_number: number;
   name: string;
   episode_count: number;
@@ -133,6 +134,46 @@ export default function Player({
       return `https://www.vidking.net/embed/tv/${movieId}/1/1?autoPlay=true&color=${color}&episodeSelector=true&nextEpisode=true`;
     }
 
+    if (src === "vidstream") {
+      if (type === "movie") {
+        return `https://vidstream.pro/movie/${movieId}`;
+      }
+      if (type === "tv" && season && episode) {
+        return `https://vidstream.pro/tv/${movieId}/${season}/${episode}`;
+      }
+      return `https://vidstream.pro/tv/${movieId}/1/1`;
+    }
+
+    if (src === "2embed") {
+      if (type === "movie") {
+        return `https://www.2embed.cc/embed/${movieId}?type=movie`;
+      }
+      if (type === "tv" && season && episode) {
+        return `https://www.2embed.cc/embed/${movieId}?type=tv&season=${season}&episode=${episode}`;
+      }
+      return `https://www.2embed.cc/embed/${movieId}?type=tv`;
+    }
+
+    if (src === "multiembed") {
+      if (type === "movie") {
+        return `https://multiembed.mov/embed/movie/${movieId}`;
+      }
+      if (type === "tv" && season && episode) {
+        return `https://multiembed.mov/embed/tv/${movieId}/${season}/${episode}`;
+      }
+      return `https://multiembed.mov/embed/tv/${movieId}/1/1`;
+    }
+
+    if (src === "embedsu") {
+      if (type === "movie") {
+        return `https://embed.su/embed/movie/${movieId}`;
+      }
+      if (type === "tv" && season && episode) {
+        return `https://embed.su/embed/tv/${movieId}/${season}/${episode}`;
+      }
+      return `https://embed.su/embed/tv/${movieId}/1/1`;
+    }
+
     if (type === "anime") {
       return `https://vidsrc.me/embed/anime/${movieId}`;
     }
@@ -147,6 +188,10 @@ export default function Player({
   const sources: { id: Source; label: string }[] = [
     { id: "vidsrc", label: "VidSrc" },
     { id: "vidking", label: "VidKing" },
+    { id: "vidstream", label: "VidStream" },
+    { id: "2embed", label: "2Embed" },
+    { id: "multiembed", label: "MultiEmbed" },
+    { id: "embedsu", label: "EmbedSU" },
   ];
 
   return (
@@ -238,18 +283,13 @@ export default function Player({
           )}
 
           <div className="flex items-center gap-0.5 xs:gap-1">
-            {sources.map((s) => (
-              <button
-                key={s.id}
-                onClick={() => setSource(s.id)}
-                className={`carousel-dot h-7 xs:h-8 sm:h-9 px-2 xs:px-3 rounded-lg text-[10px] xs:text-xs font-medium transition-colors ${
-                  source === s.id ? "bg-accent text-white" : "glass text-foreground-secondary hover:text-white"
-                }`}
-                aria-label={`Switch to ${s.label}`}
-              >
-                {s.label}
-              </button>
-            ))}
+            <Select
+              value={source}
+              onValueChange={(v) => setSource(v as Source)}
+              options={sources.map((s) => ({ value: s.id, label: s.label }))}
+              placeholder="Source"
+              className="w-auto"
+            />
           </div>
         </div>
       </div>
