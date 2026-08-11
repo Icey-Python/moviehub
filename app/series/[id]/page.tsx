@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import SeasonTabs from "@/app/components/SeasonTabs";
 import TrailerButton from "@/app/components/TrailerButton";
-import { getTVShow, getTVShowCredits, getTVSeason, getTVLogo, getTVTrailer, posterUrl, backdropUrl } from "@/app/lib/tmdb";
+import { getTVShow, getTVShowCredits, getTVSeason, getTVLogo, getTVTrailer, getTVReviews, posterUrl, backdropUrl } from "@/app/lib/tmdb";
 import MediaActions from "@/app/components/MediaActions";
+import MovieReviews from "@/app/components/MovieReviews";
 import { IconPlayerPlay, IconStar, IconCalendar, IconDeviceTv, IconUsers } from "@tabler/icons-react";
 
 export default async function TVDetailPage({
@@ -23,13 +24,14 @@ export default async function TVDetailPage({
     notFound();
   }
 
-  let tv, credits, logo, trailer;
+  let tv, credits, logo, trailer, reviewsData;
   try {
-    [tv, credits, logo, trailer] = await Promise.all([
+    [tv, credits, logo, trailer, reviewsData] = await Promise.all([
       getTVShow(tvId),
       getTVShowCredits(tvId),
       getTVLogo(tvId).catch(() => null),
       getTVTrailer(tvId),
+      getTVReviews(tvId).catch(() => ({ id: tvId, page: 1, results: [], total_pages: 0, total_results: 0 })),
     ]);
   } catch {
     notFound();
@@ -203,6 +205,9 @@ export default async function TVDetailPage({
             </div>
           </section>
         )}
+
+        {/* Reviews */}
+        <MovieReviews reviews={reviewsData.results} />
       </main>
     </>
   );

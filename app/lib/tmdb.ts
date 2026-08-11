@@ -1,4 +1,4 @@
-import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail, SeasonDetail, Person, PersonCredits, Video, VideosResponse } from "./types";
+import type { Movie, MovieDetail, TMDBResponse, Credits, TVShow, TVShowDetail, SeasonDetail, Person, PersonCredits, Video, VideosResponse, ReviewsResponse } from "./types";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE = "https://image.tmdb.org/t/p";
@@ -168,4 +168,12 @@ export async function getMovieTrailer(id: number): Promise<Video | null> {
 
 export async function getTVTrailer(id: number): Promise<Video | null> {
   return getVideos(`/tv/${id}`);
+}
+
+export async function getMovieReviews(id: number): Promise<ReviewsResponse> {
+  return tmdbFetch<ReviewsResponse>(`/movie/${id}/reviews`);
+}
+
+export async function getTVReviews(id: number): Promise<ReviewsResponse> {
+  return tmdbFetch<ReviewsResponse>(`/tv/${id}/reviews`);
 }
