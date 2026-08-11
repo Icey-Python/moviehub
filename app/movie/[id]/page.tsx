@@ -3,8 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import TrailerButton from "@/app/components/TrailerButton";
-import { getMovie, getMovieCredits, getMovieLogo, getMovieTrailer, posterUrl, backdropUrl } from "@/app/lib/tmdb";
+import { getMovie, getMovieCredits, getMovieLogo, getMovieTrailer, getMovieReviews, posterUrl, backdropUrl } from "@/app/lib/tmdb";
 import MediaActions from "@/app/components/MediaActions";
+import MovieReviews from "@/app/components/MovieReviews";
 import { IconPlayerPlay, IconStar, IconClock, IconCalendar, IconUsers } from "@tabler/icons-react";
 
 export default async function MovieDetailPage({
@@ -19,13 +20,14 @@ export default async function MovieDetailPage({
     notFound();
   }
 
-  let movie, credits, logo, trailer;
+  let movie, credits, logo, trailer, reviewsData;
   try {
-    [movie, credits, logo, trailer] = await Promise.all([
+    [movie, credits, logo, trailer, reviewsData] = await Promise.all([
       getMovie(movieId),
       getMovieCredits(movieId),
       getMovieLogo(movieId).catch(() => null),
       getMovieTrailer(movieId),
+      getMovieReviews(movieId).catch(() => ({ id: movieId, page: 1, results: [], total_pages: 0, total_results: 0 })),
     ]);
   } catch {
     notFound();
@@ -189,6 +191,9 @@ export default async function MovieDetailPage({
             </div>
           </section>
         )}
+
+        {/* Reviews */}
+        <MovieReviews reviews={reviewsData.results} />
       </main>
     </>
   );
