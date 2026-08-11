@@ -173,3 +173,7 @@ export async function getTVTrailer(id: number): Promise<Video | null> {
 export async function getMovieReviews(id: number): Promise<ReviewsResponse> {
   return tmdbFetch<ReviewsResponse>(`/movie/${id}/reviews`);
 }
+
+export async function getTVReviews(id: number): Promise<ReviewsResponse> {
+  return tmdbFetch<ReviewsResponse>(`/tv/${id}/reviews`);
+}
