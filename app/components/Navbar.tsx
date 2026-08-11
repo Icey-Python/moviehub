@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IconMovie } from "@tabler/icons-react";
+import { IconMovie, IconBookmark, IconHeart } from "@tabler/icons-react";
 import SearchBar from "./SearchBar";
 
 export default function Navbar() {
@@ -15,6 +15,22 @@ export default function Navbar() {
           </span>
         </Link>
         <SearchBar />
+        <div className="flex items-center gap-1 sm:gap-2">
+          <Link
+            href="/watchlist"
+            className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center text-foreground-secondary hover:text-white hover:bg-white/5 transition-colors"
+            aria-label="Watchlist"
+          >
+            <IconBookmark className="w-4 h-4 sm:w-5 sm:h-5" stroke={1.5} />
+          </Link>
+          <Link
+            href="/favourites"
+            className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center text-foreground-secondary hover:text-white hover:bg-white/5 transition-colors"
+            aria-label="Favourites"
+          >
+            <IconHeart className="w-4 h-4 sm:w-5 sm:h-5" stroke={1.5} />
+          </Link>
+        </div>
       </header>
     </div>
   );

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import AnimeEpisodes from "@/app/components/AnimeEpisodes";
 import { getAnime } from "@/app/lib/anilist";
+import MediaActions from "@/app/components/MediaActions";
 import { IconPlayerPlay, IconStar, IconClock, IconCalendar } from "@tabler/icons-react";
 
 export default async function AnimeDetailPage({
@@ -135,13 +136,19 @@ export default async function AnimeDetailPage({
               </p>
             )}
 
-            <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3">
               <Link href={`/anime/${anime.id}/watch`}>
                 <button className="btn-primary rounded-xl">
                   <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
                   Watch Now
                 </button>
               </Link>
+              <MediaActions
+                id={anime.id}
+                type="anime"
+                title={title}
+                poster={anime.coverImage.large || ""}
+              />
             </div>
 
             <div className="mt-6 sm:mt-8">

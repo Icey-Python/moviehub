@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import TrailerButton from "@/app/components/TrailerButton";
 import { getMovie, getMovieCredits, getMovieLogo, getMovieTrailer, posterUrl, backdropUrl } from "@/app/lib/tmdb";
+import MediaActions from "@/app/components/MediaActions";
 import { IconPlayerPlay, IconStar, IconClock, IconCalendar, IconUsers } from "@tabler/icons-react";
 
 export default async function MovieDetailPage({
@@ -128,7 +129,7 @@ export default async function MovieDetailPage({
             </div>
 
             {/* Actions */}
-            <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3">
               <Link href={`/movie/${movie.id}/watch`}>
                 <button className="btn-primary rounded-xl">
                   <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
@@ -136,6 +137,12 @@ export default async function MovieDetailPage({
                 </button>
               </Link>
               {trailer && <TrailerButton videoKey={trailer.key} title={movie.title} />}
+              <MediaActions
+                id={movie.id}
+                type="movie"
+                title={movie.title}
+                poster={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : ""}
+              />
             </div>
           </div>
         </div>

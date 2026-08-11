@@ -5,6 +5,7 @@ import Navbar from "@/app/components/Navbar";
 import SeasonTabs from "@/app/components/SeasonTabs";
 import TrailerButton from "@/app/components/TrailerButton";
 import { getTVShow, getTVShowCredits, getTVSeason, getTVLogo, getTVTrailer, posterUrl, backdropUrl } from "@/app/lib/tmdb";
+import MediaActions from "@/app/components/MediaActions";
 import { IconPlayerPlay, IconStar, IconCalendar, IconDeviceTv, IconUsers } from "@tabler/icons-react";
 
 export default async function TVDetailPage({
@@ -129,7 +130,7 @@ export default async function TVDetailPage({
               ))}
             </div>
 
-            <div className="mt-6 sm:mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3">
               <Link href={`/series/${tv.id}/watch`}>
                 <button className="btn-primary rounded-xl">
                   <IconPlayerPlay className="w-5 h-5" fill="currentColor" stroke={1.5} />
@@ -137,6 +138,12 @@ export default async function TVDetailPage({
                 </button>
               </Link>
               {trailer && <TrailerButton videoKey={trailer.key} title={tv.name} />}
+              <MediaActions
+                id={tv.id}
+                type="tv"
+                title={tv.name}
+                poster={tv.poster_path ? `https://image.tmdb.org/t/p/w500${tv.poster_path}` : ""}
+              />
             </div>
 
             <div className="mt-6 sm:mt-8">
