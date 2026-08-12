@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import AnimeEpisodes from "@/app/components/AnimeEpisodes";
+import DynamicColorBackground from "@/app/components/DynamicColorBackground";
 import { getAnime } from "@/app/lib/anilist";
 import MediaActions from "@/app/components/MediaActions";
 import { IconPlayerPlay, IconStar, IconClock, IconCalendar } from "@tabler/icons-react";
@@ -43,9 +44,11 @@ export default async function AnimeDetailPage({
   const format = anime.format || "TV";
   const season = anime.season && anime.seasonYear ? `${anime.season} ${anime.seasonYear}` : "";
   const duration = anime.duration ? `${anime.duration} min` : "";
+  const bgImg = anime.bannerImage || anime.coverImage.extraLarge || anime.coverImage.large;
 
   return (
-    <>
+    <div className="relative min-h-screen">
+      <DynamicColorBackground imageUrl={bgImg} />
       <Navbar />
       <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 lg:py-12">
         {anime.bannerImage && (
@@ -227,6 +230,6 @@ export default async function AnimeDetailPage({
           </section>
         )}
       </main>
-    </>
+    </div>
   );
 }
