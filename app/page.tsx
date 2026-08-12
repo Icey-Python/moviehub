@@ -5,6 +5,15 @@ import ContinueWatching from "@/app/components/ContinueWatching";
 import { getTrending, getPopular, getTopRated, getTrendingTV, getPopularTV, getTopRatedTV, searchMovies, searchTVShows, getMovieLogo } from "@/app/lib/tmdb";
 import { getTrendingAnime, getPopularAnime, getTopRatedAnime, searchAnime, type AnilistMedia } from "@/app/lib/anilist";
 
+async function getTmdbSafe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await fn();
+  } catch (e) {
+    console.warn(`TMDB API failed: ${e}`);
+    return fallback;
+  }
+}
+
 async function getAnilistSafe<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
   try {
     return await fn();
@@ -24,8 +33,8 @@ export default async function HomePage({
 
   if (query) {
     const [movies, tvShows, anime] = await Promise.all([
-      searchMovies(query),
-      searchTVShows(query),
+      getTmdbSafe(() => searchMovies(query), []),
+      getTmdbSafe(() => searchTVShows(query), []),
       getAnilistSafe(() => searchAnime(query), { media: [] as AnilistMedia[], pageInfo: { currentPage: 1, lastPage: 1, hasNextPage: false, perPage: 10, total: 0 } }),
     ]);
 
@@ -36,7 +45,7 @@ export default async function HomePage({
           <h1 className="text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight">
             Results for <span className="text-gradient">&quot;{query}&quot;</span>
           </h1>
-          <MovieGrid movies={movies} title={`Movies`} />
+          {movies.length > 0 && <MovieGrid movies={movies} title={`Movies`} />}
           {tvShows.length > 0 && (
             <MovieGrid movies={tvShows} title={`TV Shows`} isTV />
           )}
@@ -49,12 +58,12 @@ export default async function HomePage({
   }
 
   const [trending, popular, topRated, trendingTV, popularTV, topRatedTV, trendingAnime, popularAnime, topRatedAnime] = await Promise.all([
-    getTrending(),
-    getPopular(),
-    getTopRated(),
-    getTrendingTV(),
-    getPopularTV(),
-    getTopRatedTV(),
+    getTmdbSafe(() => getTrending(), []),
+    getTmdbSafe(() => getPopular(), []),
+    getTmdbSafe(() => getTopRated(), []),
+    getTmdbSafe(() => getTrendingTV(), []),
+    getTmdbSafe(() => getPopularTV(), []),
+    getTmdbSafe(() => getTopRatedTV(), []),
     getAnilistSafe(() => getTrendingAnime(undefined, 10), { media: [] as AnilistMedia[], pageInfo: { currentPage: 1, lastPage: 1, hasNextPage: false, perPage: 10, total: 0 } }),
     getAnilistSafe(() => getPopularAnime(undefined, 10), { media: [] as AnilistMedia[], pageInfo: { currentPage: 1, lastPage: 1, hasNextPage: false, perPage: 10, total: 0 } }),
     getAnilistSafe(() => getTopRatedAnime(undefined, 10), { media: [] as AnilistMedia[], pageInfo: { currentPage: 1, lastPage: 1, hasNextPage: false, perPage: 10, total: 0 } }),
