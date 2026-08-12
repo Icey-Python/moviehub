@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Movie } from "@/app/lib/types";
 import { backdropUrl } from "@/app/lib/tmdb";
+import DynamicColorBackground from "@/app/components/DynamicColorBackground";
 import { IconPlayerPlay, IconStar, IconInfoCircle, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 
 export default function HeroCarousel({ movies, logos }: { movies: Movie[]; logos: (string | null)[] }) {
@@ -27,10 +28,13 @@ export default function HeroCarousel({ movies, logos }: { movies: Movie[]; logos
 
   const movie = movies[current];
   const logo = logos[current];
+  const activeBackdrop = movie ? backdropUrl(movie.backdrop_path) : null;
 
   return (
-    <section
-      className="relative w-full h-[200px] xs:h-[240px] sm:h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-xl sm:rounded-2xl border border-border/50"
+    <div className="relative">
+      <DynamicColorBackground imageUrl={activeBackdrop} className="-top-16 xs:-top-20 sm:-top-24 md:-top-28 lg:-top-32" />
+      <section
+        className="relative w-full h-[200px] xs:h-[240px] sm:h-[300px] md:h-[400px] lg:h-[500px] overflow-hidden rounded-xl sm:rounded-2xl border border-border/50"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-label="Featured movies carousel"
@@ -49,9 +53,8 @@ export default function HeroCarousel({ movies, logos }: { movies: Movie[]; logos
         />
       ))}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent md:via-black/40" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent md:from-black/50" />
-      <div className="absolute inset-0 bg-gradient-radial from-accent/10 via-transparent to-transparent opacity-50" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/20 to-transparent" />
 
       <div className="absolute inset-0 flex flex-col justify-end p-3 xs:p-4 sm:p-6 md:p-8 lg:p-12" key={movie.id}>
         {logo ? (
@@ -134,5 +137,6 @@ export default function HeroCarousel({ movies, logos }: { movies: Movie[]; logos
         ))}
       </div>
     </section>
+  </div>
   );
 }

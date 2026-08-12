@@ -52,7 +52,7 @@ export function Select({ value, onValueChange, options, className = "", placehol
       </button>
 
       {isOpen && !disabled && (
-        <div className="absolute right-0 top-full mt-1.5 z-50 w-full min-w-[180px] glass rounded-xl border border-border/50 shadow-lg overflow-hidden">
+        <div className="absolute right-0 top-full mt-1.5 z-50 w-full min-w-[180px] bg-zinc-950/98 backdrop-blur-xl rounded-xl border border-zinc-800/90 shadow-2xl shadow-black/90 overflow-hidden">
           <ul className="py-1.5 max-h-60 overflow-y-auto" role="listbox">
             {options.map((option) => (
               <li key={option.value} role="option" aria-selected={option.value === value}>
@@ -62,10 +62,10 @@ export function Select({ value, onValueChange, options, className = "", placehol
                     onValueChange(option.value);
                     setIsOpen(false);
                   }}
-                  className={`w-full px-3 py-1.5 text-[10px] xs:text-xs text-left transition-colors ${
+                  className={`w-full px-3 py-2 text-[10px] xs:text-xs text-left transition-colors flex items-center justify-between ${
                     option.value === value
                       ? "bg-accent/20 text-accent font-medium"
-                      : "text-foreground-secondary hover:bg-white/10 hover:text-white"
+                      : "text-zinc-300 hover:bg-zinc-800/80 hover:text-white"
                   }`}
                 >
                   {option.label}

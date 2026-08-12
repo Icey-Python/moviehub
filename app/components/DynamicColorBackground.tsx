@@ -5,9 +5,10 @@ import { extractColors } from "extract-colors";
 
 interface DynamicColorBackgroundProps {
   imageUrl?: string | null;
+  className?: string;
 }
 
-export default function DynamicColorBackground({ imageUrl }: DynamicColorBackgroundProps) {
+export default function DynamicColorBackground({ imageUrl, className = "" }: DynamicColorBackgroundProps) {
   const [colors, setColors] = useState<{
     primary: string;
     secondary: string;
@@ -41,7 +42,7 @@ export default function DynamicColorBackground({ imageUrl }: DynamicColorBackgro
 
         const primary = primaryObj.hex;
         const secondary = secondaryObj.hex;
-        const glow = `rgba(${primaryObj.red}, ${primaryObj.green}, ${primaryObj.blue}, 0.45)`;
+        const glow = `rgba(${primaryObj.red}, ${primaryObj.green}, ${primaryObj.blue}, 0.65)`;
 
         setColors({ primary, secondary, glow });
         setIsLoaded(true);
@@ -52,9 +53,9 @@ export default function DynamicColorBackground({ imageUrl }: DynamicColorBackgro
         const hash = Array.from(imageUrl).reduce((acc, char) => acc + char.charCodeAt(0), 0);
         const hue = hash % 360;
         setColors({
-          primary: `hsl(${hue}, 70%, 45%)`,
-          secondary: `hsl(${hue}, 60%, 15%)`,
-          glow: `hsla(${hue}, 80%, 55%, 0.35)`,
+          primary: `hsl(${hue}, 80%, 50%)`,
+          secondary: `hsl(${hue}, 70%, 20%)`,
+          glow: `hsla(${hue}, 85%, 60%, 0.55)`,
         });
         setIsLoaded(true);
       });
@@ -65,11 +66,11 @@ export default function DynamicColorBackground({ imageUrl }: DynamicColorBackgro
   }, [imageUrl]);
 
   return (
-    <div className="absolute inset-x-0 top-0 h-[650px] sm:h-[800px] pointer-events-none overflow-hidden -z-10 transition-opacity duration-1000">
+    <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-screen h-[750px] xs:h-[850px] sm:h-[950px] pointer-events-none overflow-hidden -z-10 transition-opacity duration-1000 ${className}`}>
       {/* YouTube Ambient Cinematic Blurred Backdrop */}
       {imageUrl && (
         <div
-          className="absolute inset-0 bg-cover bg-center filter blur-[90px] scale-125 opacity-40 transition-opacity duration-1000"
+          className="absolute inset-0 bg-cover bg-center filter blur-[75px] scale-130 opacity-60 sm:opacity-65 transition-opacity duration-1000"
           style={{ backgroundImage: `url(${imageUrl})` }}
         />
       )}
@@ -79,16 +80,16 @@ export default function DynamicColorBackground({ imageUrl }: DynamicColorBackgro
         className="absolute inset-0 transition-colors duration-700 ease-out"
         style={{
           background: `
-            radial-gradient(ellipse 85% 55% at 50% -5%, ${colors.glow} 0%, transparent 80%),
-            radial-gradient(circle 480px at 12% 18%, ${colors.primary} 0%, transparent 70%),
-            radial-gradient(circle 420px at 88% 12%, ${colors.secondary} 0%, transparent 70%),
-            linear-gradient(to bottom, rgba(9,9,11,0.15) 0%, rgba(9,9,11,0.75) 50%, #09090b 100%)
+            radial-gradient(ellipse 95% 65% at 50% -5%, ${colors.glow} 0%, transparent 85%),
+            radial-gradient(circle 550px at 15% 15%, ${colors.primary} 0%, transparent 75%),
+            radial-gradient(circle 500px at 85% 10%, ${colors.secondary} 0%, transparent 75%),
+            linear-gradient(to bottom, transparent 0%, rgba(9,9,11,0.35) 45%, rgba(9,9,11,0.85) 75%, #09090b 100%)
           `,
         }}
       />
 
-      {/* Glassmorphic Fade Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background" />
+      {/* Top Glassmorphic Vignette Fade */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-background" />
     </div>
   );
 }

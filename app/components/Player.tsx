@@ -244,20 +244,20 @@ export default function Player({
                 </button>
 
                 {pickerOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-56 xs:w-64 max-h-60 xs:max-h-72 overflow-y-auto glass rounded-xl p-2 xs:p-3 z-50 border border-border/50">
+                  <div className="absolute right-0 top-full mt-2 w-56 xs:w-64 max-h-60 xs:max-h-72 overflow-y-auto bg-zinc-950/98 backdrop-blur-xl rounded-xl p-2.5 xs:p-3 z-50 border border-zinc-800/90 shadow-2xl shadow-black/90">
                     {seasons.map((s) => (
-                      <div key={s.season_number} className="mb-2 xs:mb-3 last:mb-0">
-                        <p className="text-[10px] xs:text-xs font-semibold text-muted-foreground px-1.5 xs:px-2 mb-1.5 xs:mb-2">{s.name}</p>
-                        <div className="grid grid-cols-6 gap-1 xs:gap-1.5">
+                      <div key={s.season_number} className="mb-2.5 xs:mb-3.5 last:mb-0">
+                        <p className="text-[10px] xs:text-xs font-bold text-zinc-300 px-1.5 xs:px-2 mb-1.5 xs:mb-2 tracking-wide uppercase">{s.name}</p>
+                        <div className="grid grid-cols-6 gap-1.5">
                           {Array.from({ length: s.episode_count }, (_, i) => i + 1).map((ep) => (
                             <Link
                               key={ep}
                               href={`${watchBase}?season=${s.season_number}&ep=${ep}`}
                               onClick={() => setPickerOpen(false)}
-                              className={`carousel-dot h-7 xs:h-8 text-center text-[10px] xs:text-xs rounded-lg transition-colors ${
+                              className={`carousel-dot h-7 xs:h-8 flex items-center justify-center text-[10px] xs:text-xs rounded-lg transition-colors font-medium ${
                                 s.season_number === currentSeason && ep === currentEpisode
-                                  ? "bg-accent text-white"
-                                  : "text-foreground-secondary hover:bg-white/10"
+                                  ? "bg-accent text-white font-bold shadow-md shadow-accent/40"
+                                  : "text-zinc-300 bg-zinc-900/80 hover:bg-zinc-800 hover:text-white border border-zinc-800/50"
                               }`}
                             >
                               {ep}
