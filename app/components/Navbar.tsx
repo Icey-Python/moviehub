@@ -5,9 +5,9 @@ import SearchBar from "./SearchBar";
 export default function Navbar() {
   return (
     <div className="sticky top-0 z-50 w-full flex justify-center pt-2 sm:pt-3 md:pt-4 px-3 sm:px-4">
-      <header className="w-full max-w-6xl h-12 sm:h-14 md:h-16 flex items-center justify-between gap-2 sm:gap-3 md:gap-4 rounded-xl sm:rounded-2xl border border-border/50 bg-background-elevated/80 backdrop-blur-xl px-3 sm:px-4 md:px-6">
+      <header className="w-full max-w-6xl h-12 sm:h-14 md:h-16 flex items-center justify-between gap-2 sm:gap-3 md:gap-4 rounded-xl sm:rounded-2xl border border-white/15 bg-zinc-900/35 backdrop-blur-2xl shadow-[0_8px_32px_0_rgba(0,0,0,0.45)] px-3 sm:px-4 md:px-6 transition-all duration-300">
         <Link href="/" className="flex items-center gap-2 shrink-0 group" aria-label="MovieHub Home">
-          <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
+          <div className="w-9 h-9 rounded-xl bg-accent flex items-center justify-center transition-transform duration-200 group-hover:scale-105 active:scale-95 shadow-md shadow-accent/30">
             <IconMovie className="w-5 h-5 text-white" stroke={2} />
           </div>
           <span className="font-bold text-base sm:text-lg tracking-tight hidden sm:block">
@@ -18,14 +18,14 @@ export default function Navbar() {
         <div className="flex items-center gap-1 sm:gap-2">
           <Link
             href="/watchlist"
-            className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center text-foreground-secondary hover:text-white hover:bg-white/5 transition-colors"
+            className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center text-foreground-secondary hover:text-white hover:bg-white/10 active:scale-95 transition-all duration-150 border border-transparent hover:border-white/10"
             aria-label="Watchlist"
           >
             <IconBookmark className="w-4 h-4 sm:w-5 sm:h-5" stroke={1.5} />
           </Link>
           <Link
             href="/favourites"
-            className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center text-foreground-secondary hover:text-white hover:bg-white/5 transition-colors"
+            className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center text-foreground-secondary hover:text-white hover:bg-white/10 active:scale-95 transition-all duration-150 border border-transparent hover:border-white/10"
             aria-label="Favourites"
           >
             <IconHeart className="w-4 h-4 sm:w-5 sm:h-5" stroke={1.5} />
