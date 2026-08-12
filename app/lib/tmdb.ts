@@ -5,15 +5,20 @@ const IMAGE_BASE = "https://image.tmdb.org/t/p";
 
 function apiKey(): string {
   const key = process.env.TMDB_API_KEY;
-  if (!key) throw new Error("TMDB_API_KEY is not set");
+  if (!key) throw new Error("TMDB_API_KEY environment variable is not configured");
   return key;
 }
 
 async function tmdbFetch<T>(path: string): Promise<T> {
-  const url = `${BASE_URL}${path}${path.includes("?") ? "&" : "?"}api_key=${apiKey()}`;
-  const res = await fetch(url, { next: { revalidate: 3600 } });
-  if (!res.ok) throw new Error(`TMDB error: ${res.status}`);
-  return res.json();
+  try {
+    const url = `${BASE_URL}${path}${path.includes("?") ? "&" : "?"}api_key=${apiKey()}`;
+    const res = await fetch(url, { next: { revalidate: 3600 } });
+    if (!res.ok) throw new Error(`TMDB error: ${res.status}`);
+    return await res.json();
+  } catch (e) {
+    console.error(`TMDB fetch failed for ${path}:`, e);
+    throw e;
+  }
 }
 
 export function posterUrl(path: string | null, size = "w500"): string {
