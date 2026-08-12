@@ -25,6 +25,7 @@ function setStored(data: FavouriteItem[]) {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    window.dispatchEvent(new Event("moviehub_favourites_change"));
   } catch {
     // storage full or unavailable
   }

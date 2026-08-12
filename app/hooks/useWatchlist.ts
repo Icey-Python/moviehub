@@ -25,6 +25,7 @@ function setStored(data: WatchlistItem[]) {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    window.dispatchEvent(new Event("moviehub_watchlist_change"));
   } catch {
     // storage full or unavailable
   }

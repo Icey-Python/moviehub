@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import SeasonTabs from "@/app/components/SeasonTabs";
 import TrailerButton from "@/app/components/TrailerButton";
+import DynamicColorBackground from "@/app/components/DynamicColorBackground";
 import { getTVShow, getTVShowCredits, getTVSeason, getTVLogo, getTVTrailer, getTVReviews, posterUrl, backdropUrl } from "@/app/lib/tmdb";
 import MediaActions from "@/app/components/MediaActions";
 import MovieReviews from "@/app/components/MovieReviews";
@@ -52,9 +53,11 @@ export default async function TVDetailPage({
   }
 
   const topCast = credits.cast.slice(0, 12);
+  const backdropImg = backdropUrl(tv.backdrop_path);
 
   return (
-    <>
+    <div className="relative min-h-screen">
+      <DynamicColorBackground imageUrl={backdropImg} />
       <Navbar />
       <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 lg:py-12">
         <div className="relative w-full aspect-video max-h-[200px] xs:max-h-[280px] sm:max-h-[360px] md:max-h-[440px] overflow-hidden rounded-xl sm:rounded-2xl border border-border/50 mb-4 xs:mb-6 sm:mb-8 md:mb-10">
@@ -209,6 +212,6 @@ export default async function TVDetailPage({
         {/* Reviews */}
         <MovieReviews reviews={reviewsData.results} />
       </main>
-    </>
+    </div>
   );
 }

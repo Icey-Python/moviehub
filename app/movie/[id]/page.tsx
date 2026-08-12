@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/app/components/Navbar";
 import TrailerButton from "@/app/components/TrailerButton";
+import DynamicColorBackground from "@/app/components/DynamicColorBackground";
 import { getMovie, getMovieCredits, getMovieLogo, getMovieTrailer, getMovieReviews, posterUrl, backdropUrl } from "@/app/lib/tmdb";
 import MediaActions from "@/app/components/MediaActions";
 import MovieReviews from "@/app/components/MovieReviews";
@@ -40,9 +41,11 @@ export default async function MovieDetailPage({
   const topCast = credits.cast.slice(0, 12);
   const runtimeH = Math.floor(movie.runtime / 60);
   const runtimeM = movie.runtime % 60;
+  const backdropImg = backdropUrl(movie.backdrop_path);
 
   return (
-    <>
+    <div className="relative min-h-screen">
+      <DynamicColorBackground imageUrl={backdropImg} />
       <Navbar />
       <main className="page-container py-4 xs:py-6 sm:py-8 md:py-10 lg:py-12">
         {/* Backdrop */}
@@ -195,6 +198,6 @@ export default async function MovieDetailPage({
         {/* Reviews */}
         <MovieReviews reviews={reviewsData.results} />
       </main>
-    </>
+    </div>
   );
 }

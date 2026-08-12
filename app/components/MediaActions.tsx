@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { motion } from "motion/react";
 import { IconBookmark, IconBookmarkFilled, IconHeart, IconHeartFilled } from "@tabler/icons-react";
 import { useWatchlist } from "@/app/hooks/useWatchlist";
 import { useFavourites } from "@/app/hooks/useFavourites";
@@ -31,32 +32,57 @@ export default function MediaActions({ id, type, title, poster }: MediaActionsPr
 
   return (
     <>
-      <button
+      <motion.button
+        whileTap={{ scale: 0.75 }}
+        whileHover={{ scale: 1.1 }}
+        transition={{ type: "spring", stiffness: 400, damping: 17 }}
         onClick={handleWatchlist}
-        className={`h-12 w-12 rounded-xl flex items-center justify-center transition-colors duration-200 ${
-          inWatchlist ? "text-accent hover:text-accent-hover" : "text-foreground-secondary hover:text-white"
+        className={`h-12 w-12 rounded-xl flex items-center justify-center border transition-colors duration-200 ${
+          inWatchlist
+            ? "bg-accent/15 text-accent border-accent/40 shadow-sm shadow-accent/20"
+            : "bg-white/[0.05] text-foreground-secondary hover:text-white border-white/10 hover:border-white/20"
         }`}
         aria-label={inWatchlist ? "Remove from watchlist" : "Add to watchlist"}
       >
-        {inWatchlist ? (
-          <IconBookmarkFilled className="w-5 h-5" fill="currentColor" stroke={1.5} />
-        ) : (
-          <IconBookmark className="w-5 h-5" stroke={1.5} />
-        )}
-      </button>
-      <button
+        <motion.div
+          key={inWatchlist ? "saved" : "unsaved"}
+          initial={{ scale: 0.5, rotate: -15 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: "spring", stiffness: 500, damping: 15 }}
+        >
+          {inWatchlist ? (
+            <IconBookmarkFilled className="w-5 h-5 text-accent" fill="currentColor" stroke={1.5} />
+          ) : (
+            <IconBookmark className="w-5 h-5" stroke={1.5} />
+          )}
+        </motion.div>
+      </motion.button>
+
+      <motion.button
+        whileTap={{ scale: 0.75 }}
+        whileHover={{ scale: 1.1 }}
+        transition={{ type: "spring", stiffness: 400, damping: 17 }}
         onClick={handleFavourite}
-        className={`h-12 w-12 rounded-xl flex items-center justify-center transition-colors duration-200 ${
-          isFav ? "text-accent hover:text-accent-hover" : "text-foreground-secondary hover:text-white"
+        className={`h-12 w-12 rounded-xl flex items-center justify-center border transition-colors duration-200 ${
+          isFav
+            ? "bg-rose-500/15 text-rose-500 border-rose-500/40 shadow-sm shadow-rose-500/20"
+            : "bg-white/[0.05] text-foreground-secondary hover:text-white border-white/10 hover:border-white/20"
         }`}
         aria-label={isFav ? "Remove from favourites" : "Add to favourites"}
       >
-        {isFav ? (
-          <IconHeartFilled className="w-5 h-5" fill="currentColor" stroke={1.5} />
-        ) : (
-          <IconHeart className="w-5 h-5" stroke={1.5} />
-        )}
-      </button>
+        <motion.div
+          key={isFav ? "liked" : "unliked"}
+          initial={{ scale: 0.5, rotate: 15 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ type: "spring", stiffness: 500, damping: 15 }}
+        >
+          {isFav ? (
+            <IconHeartFilled className="w-5 h-5 text-rose-500" fill="currentColor" stroke={1.5} />
+          ) : (
+            <IconHeart className="w-5 h-5" stroke={1.5} />
+          )}
+        </motion.div>
+      </motion.button>
     </>
   );
 }
